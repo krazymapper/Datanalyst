@@ -6,6 +6,20 @@ export interface Translations {
   // Navigation & Header
   appTitle: string;
   workspaceSubtitle: string;
+  skipToContent: string;
+  stripesLabel: string;
+  footerNote: string;
+  dataNotice: string;
+  dataNoticeLink: string;
+  summaryTitle: string;
+  summaryData: string;
+  summaryNoData: string;
+  summaryClimate: string;
+  summaryClimateOff: string;
+  summaryQuestion: string;
+  summaryNoQuestion: string;
+  runHint: string;
+
   languageSelect: string;
   buyMeCoffee: string;
   supportOurWork: string;
@@ -175,7 +189,20 @@ export const translations: Record<Language, Translations> = {
   en: {
     // Navigation & Header
     appTitle: 'AI Data Analyst',
-    workspaceSubtitle: 'Data Analyst Workspace',
+    skipToContent: "Skip to workspace",
+    stripesLabel: "Warming stripes: smoothed illustration from 1850 to 2100 for the selected scenario (IPCC AR6 best estimate for 2081-2100). Not measured data.",
+    footerNote: "Datanalyst sends your data and question to the Gemini API to produce the analysis. Check figures before relying on them.",
+    dataNotice: "Your files are sent to Google's Gemini API for analysis. Do not upload personal or confidential data. Depending on your Gemini API plan, Google may use this data to improve its products:",
+    dataNoticeLink: "Gemini API terms",
+    summaryTitle: "Your analysis",
+    summaryData: "Data",
+    summaryNoData: "No file yet",
+    summaryClimate: "Climate context",
+    summaryClimateOff: "Off (optional)",
+    summaryQuestion: "Question",
+    summaryNoQuestion: "Not written yet",
+    runHint: "Add at least one file and a question to start.",
+    workspaceSubtitle: 'AI data analyst',
     languageSelect: 'Language',
     buyMeCoffee: 'Buy me a coffee',
     supportOurWork: 'Support our work',
@@ -183,12 +210,12 @@ export const translations: Record<Language, Translations> = {
     // Setup Step 1
     heroTitle1: 'Ask anything',
     heroTitle2: 'about your data',
-    heroTitle: 'Ask anything',
+    heroTitle: 'Ask your data a question.',
     heroSubtitle: 'about your data',
     heroDesc: 'AI Data Analyst delivers interactive data intelligence, analytics, and actionable insights.',
-    heroDescription: 'AI Data Analyst delivers interactive data intelligence, analytics, and actionable insights.',
+    heroDescription: 'Drop one or more CSV files, optionally add a CMIP6 climate context, and the Gemini agent writes a report: key figures, charts and recommendations.',
     heroSubdesc: 'Upload one or more CSVs, ask a business question, and let the agent autonomously analyze it.',
-    step1Title: '1. Choose a dataset',
+    step1Title: 'Choose your data',
     dropCsvPrompt: 'Drop CSV file(s) here or click to browse (≤ 1MB)',
     dropCsvSubprompt: 'Multiple related CSVs are supported for inline agent analysis',
     dropzoneUploading: 'Uploading and preparing dataset...',
@@ -197,7 +224,7 @@ export const translations: Record<Language, Translations> = {
     uploadingDataset: 'Uploading and preparing dataset...',
     orPasteGcs: 'Or paste a Google Cloud Storage URI',
     gcsUriTitle: 'Or paste a Google Cloud Storage URI',
-    gcsUriSubtitle: 'Google Cloud Storage files are securely loaded directly',
+    gcsUriSubtitle: 'For files over 1 MB',
     pasteGcsPlaceholder: 'gs://bucket-name/path/to/dataset.csv',
     addGcsBtn: 'Add GCS File',
     gcsAddButton: 'Add GCS File',
@@ -207,11 +234,11 @@ export const translations: Record<Language, Translations> = {
     removeFile: 'Remove file',
 
     // Climate Section
-    climateHeaderTitle: 'WorldClim v2.1 — CMIP6 Climate Scenario Modeling',
-    climateHeaderBadge: 'CMIP6 Projections',
-    climateHeaderDesc: 'Integrate high-resolution CMIP6 future climate projections directly into your datasets and predictive models.',
-    climateToggleLabel: 'Enable Climate Modeling Context',
-    climateEnabledNotice: 'Climate projections active: Downscaled CMIP6 datasets will ground your autonomous analysis.',
+    climateHeaderTitle: 'Climate context (optional)',
+    climateHeaderBadge: 'WorldClim v2.1, CMIP6',
+    climateHeaderDesc: 'Cross your data with a future climate scenario: SSP pathway, climate model, period and variable.',
+    climateToggleLabel: 'Add a climate context',
+    climateEnabledNotice: 'Off. Turn it on to give the agent a CMIP6 scenario (WorldClim v2.1) to analyse alongside your data.',
     climateScenarioLabel: 'Shared Socioeconomic Pathway (SSP)',
     climateModelLabel: 'Global Climate Model (GCM)',
     climateVariableLabel: 'Bioclimatic Variable',
@@ -229,7 +256,7 @@ export const translations: Record<Language, Translations> = {
     climateRecentEmpty: 'No recent configurations yet.',
 
     // Setup Step 3 (Questions)
-    step3Title: '3. Ask a business question',
+    step3Title: 'Ask your question',
     questionPlaceholder: 'e.g. Which product categories drive the most revenue, and how is it trending?',
     exampleQuestions: [
       'Summarize the key trends and the most important drivers in this data.',
@@ -239,7 +266,7 @@ export const translations: Record<Language, Translations> = {
     ],
     analyzeBtn: 'Analyze',
     analyzingBtn: 'Analyzing Data...',
-    analyzeButton: 'Analyze',
+    analyzeButton: 'Run the analysis',
 
     // Run Header & Status
     runDatasetLabel: 'Dataset',
@@ -349,7 +376,20 @@ export const translations: Record<Language, Translations> = {
   fr: {
     // Navigation & Header
     appTitle: 'Analyste de Données IA',
-    workspaceSubtitle: 'Espace Analyste de Données',
+    skipToContent: "Aller à l'espace de travail",
+    stripesLabel: "Bandes de réchauffement : illustration lissée de 1850 à 2100 pour le scénario choisi (meilleure estimation GIEC AR6 pour 2081-2100). Pas des mesures.",
+    footerNote: "Datanalyst envoie vos données et votre question à l'API Gemini pour produire l'analyse. Vérifiez les chiffres avant de vous en servir.",
+    dataNotice: "Vos fichiers sont envoyés à l'API Gemini de Google pour l'analyse. N'envoyez pas de données personnelles ou confidentielles. Selon votre offre Gemini API, Google peut utiliser ces données pour améliorer ses produits :",
+    dataNoticeLink: "conditions de l'API Gemini",
+    summaryTitle: "Votre analyse",
+    summaryData: "Données",
+    summaryNoData: "Aucun fichier",
+    summaryClimate: "Contexte climatique",
+    summaryClimateOff: "Désactivé (facultatif)",
+    summaryQuestion: "Question",
+    summaryNoQuestion: "Pas encore rédigée",
+    runHint: "Ajoutez au moins un fichier et une question pour lancer l'analyse.",
+    workspaceSubtitle: 'analyste de données IA',
     languageSelect: 'Langue',
     buyMeCoffee: 'Offrir un café',
     supportOurWork: 'Soutenir nos travaux',
@@ -357,12 +397,12 @@ export const translations: Record<Language, Translations> = {
     // Setup Step 1
     heroTitle1: 'Posez n\'importe quelle',
     heroTitle2: 'question sur vos données',
-    heroTitle: 'Posez n\'importe quelle',
+    heroTitle: 'Posez une question à vos données.',
     heroSubtitle: 'question sur vos données',
     heroDesc: 'L\'Analyste de Données IA fournit une intelligence décisionnelle interactive, des visualisations avancées et des recommandations exploitables.',
-    heroDescription: 'L\'Analyste de Données IA fournit une intelligence décisionnelle interactive, des visualisations avancées et des recommandations exploitables.',
+    heroDescription: 'Déposez un ou plusieurs fichiers CSV, ajoutez si besoin un contexte climatique CMIP6, et l\'agent Gemini rédige un rapport : chiffres clés, graphiques et recommandations.',
     heroSubdesc: 'Importez un ou plusieurs fichiers CSV, posez une question métier, et laissez l\'agent autonome explorer et analyser vos données.',
-    step1Title: '1. Choisissez un jeu de données',
+    step1Title: 'Choisissez vos données',
     dropCsvPrompt: 'Déposez vos fichiers CSV ici ou cliquez pour parcourir (≤ 1 Mo)',
     dropCsvSubprompt: 'Plusieurs fichiers CSV reliés sont acceptés pour une analyse conjointe par l\'agent',
     dropzoneUploading: 'Téléversement et préparation du jeu de données...',
@@ -371,7 +411,7 @@ export const translations: Record<Language, Translations> = {
     uploadingDataset: 'Téléversement et préparation du jeu de données...',
     orPasteGcs: 'Ou collez une URL Google Cloud Storage',
     gcsUriTitle: 'Ou collez une URL Google Cloud Storage',
-    gcsUriSubtitle: 'Les fichiers Google Cloud Storage sont chargés de manière sécurisée',
+    gcsUriSubtitle: 'Pour les fichiers de plus de 1 Mo',
     pasteGcsPlaceholder: 'gs://nom-du-bucket/chemin/dataset.csv',
     addGcsBtn: 'Ajouter fichier GCS',
     gcsAddButton: 'Ajouter fichier GCS',
@@ -381,11 +421,11 @@ export const translations: Record<Language, Translations> = {
     removeFile: 'Supprimer le fichier',
 
     // Climate Section
-    climateHeaderTitle: 'Modélisation des Scénarios Climatiques WorldClim v2.1 — CMIP6',
-    climateHeaderBadge: 'Projections CMIP6',
-    climateHeaderDesc: 'Intégrez directement des projections climatiques futures CMIP6 haute résolution à vos jeux de données et modèles prédictifs.',
-    climateToggleLabel: 'Activer le Contexte de Modélisation Climatique',
-    climateEnabledNotice: 'Projections climatiques actives : les données CMIP6 spatialisées enrichiront automatiquement votre analyse.',
+    climateHeaderTitle: 'Contexte climatique (facultatif)',
+    climateHeaderBadge: 'WorldClim v2.1, CMIP6',
+    climateHeaderDesc: 'Croisez vos données avec un scénario climatique futur : trajectoire SSP, modèle, période et variable.',
+    climateToggleLabel: 'Ajouter un contexte climatique',
+    climateEnabledNotice: 'Désactivé. Activez-le pour fournir à l\'agent un scénario CMIP6 (WorldClim v2.1) à analyser avec vos données.',
     climateScenarioLabel: 'Trajectoire Socio-Économique Partagée (SSP)',
     climateModelLabel: 'Modèle de Circulation Générale (GCM)',
     climateVariableLabel: 'Variable Bioclimatique',
@@ -403,7 +443,7 @@ export const translations: Record<Language, Translations> = {
     climateRecentEmpty: 'Aucune configuration récente enregistrée.',
 
     // Setup Step 3 (Questions)
-    step3Title: '3. Posez une question métier',
+    step3Title: 'Posez votre question',
     questionPlaceholder: 'ex. Quelles catégories de produits génèrent le plus de revenus, et quelle est leur tendance ?',
     exampleQuestions: [
       'Résumez les principales tendances et les facteurs déterminants de ces données.',
@@ -413,7 +453,7 @@ export const translations: Record<Language, Translations> = {
     ],
     analyzeBtn: 'Analyser',
     analyzingBtn: 'Analyse en cours...',
-    analyzeButton: 'Analyser',
+    analyzeButton: 'Lancer l\'analyse',
 
     // Run Header & Status
     runDatasetLabel: 'Jeu de données',
@@ -545,7 +585,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch {
       // Ignore
     }
-    return 'en';
+    return 'fr';
   });
 
   const setLanguage = (lang: Language) => {
@@ -582,7 +622,7 @@ export const LanguageSwitcher: React.FC<{ className?: string }> = ({ className =
   return (
     <div 
       id="language-switcher" 
-      className={`inline-flex items-center rounded-full bg-neutral-100 dark:bg-neutral-900 p-0.5 border border-neutral-200/80 dark:border-neutral-800 shadow-2xs ${className}`}
+      className={`inline-flex items-center rounded-full bg-neutral-100 p-0.5 border border-neutral-200/80 shadow-2xs ${className}`}
       role="group"
       aria-label="Language selection"
     >
@@ -591,8 +631,8 @@ export const LanguageSwitcher: React.FC<{ className?: string }> = ({ className =
         onClick={() => setLanguage('en')}
         className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
           language === 'en'
-            ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-xs'
-            : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200'
+            ? 'bg-white text-neutral-900 shadow-xs'
+            : 'text-neutral-500 hover:text-neutral-800'
         }`}
         title="Switch to English"
         aria-pressed={language === 'en'}
@@ -606,8 +646,8 @@ export const LanguageSwitcher: React.FC<{ className?: string }> = ({ className =
         onClick={() => setLanguage('fr')}
         className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
           language === 'fr'
-            ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-xs'
-            : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200'
+            ? 'bg-white text-neutral-900 shadow-xs'
+            : 'text-neutral-500 hover:text-neutral-800'
         }`}
         title="Passer en Français"
         aria-pressed={language === 'fr'}

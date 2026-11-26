@@ -11,33 +11,10 @@ import type {
 import { LogIn, LogOut, User as UserIcon, Check, Sparkles, Presentation, Database, Globe, Coffee, Heart } from 'lucide-react';
 import { ClimateSetupSection, getDefaultClimateConfig, saveRecentClimateConfig } from './components/ClimateSetupSection';
 import { BuyMeACoffeeModal, BuyMeCoffeeButton } from './components/BuyMeACoffeeModal';
+import { WarmingStripes } from './components/WarmingStripes';
+import { ThemeToggle } from './theme';
 import { useLanguage, LanguageSwitcher } from './translations';
 
-const PixelatedHeader: React.FC = () => {
-  return (
-    <div className="w-full relative overflow-hidden flex flex-col">
-      <div className="h-12 sm:h-16 lg:h-24 w-full relative rounded-t-2xl sm:rounded-t-[1.5rem] overflow-hidden mt-2 mx-2 max-w-[calc(100%-16px)] lg:max-w-screen-2xl lg:mx-auto">
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(135deg, #e93822 0%, #a24db3 50%, #4a78ed 100%)',
-          }}
-        />
-        {/* Horizontal bands for pixelated/layered effect */}
-        <div className="absolute top-[35%] left-0 right-0 bottom-0 bg-white/15 backdrop-blur-[2px]" />
-        <div className="absolute top-[65%] left-0 right-0 bottom-0 bg-white/30 backdrop-blur-[6px]" />
-        
-        {/* Light scanlines */}
-        <div 
-          className="absolute inset-0 mix-blend-overlay opacity-[0.12]"
-          style={{
-             backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.2) 3px, rgba(0,0,0,0.2) 6px)`
-          }}
-        />
-      </div>
-    </div>
-  );
-};
 
 const UPLOAD_EXAMPLES = [
   'Summarize the key trends and the most important drivers in this data.',
@@ -772,25 +749,33 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#f6f5f3] text-neutral-900 font-sans flex flex-col pb-12">
-      <PixelatedHeader />
-
-      {/* Navigation / User Profile Header */}
-      <header className="mx-auto max-w-screen-2xl w-full px-6 pt-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-io-blue" />
-          <span className="text-sm font-semibold tracking-wider uppercase text-neutral-500 font-mono">
-            {t.workspaceSubtitle}
-          </span>
+    <div className="min-h-screen w-full bg-paper text-neutral-900 font-sans flex flex-col pb-24 lg:pb-12">
+      <a href="#espace-de-travail" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:shadow">
+        {t.skipToContent}
+      </a>
+      <header className="w-full border-b border-neutral-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+        <div className="mx-auto flex max-w-screen-2xl items-center justify-between gap-4 px-6 py-3">
+          <a href="/" className="flex items-baseline gap-2 no-underline" aria-label="Datanalyst">
+            <span className="font-display text-xl font-bold tracking-tight text-neutral-900">Datanalyst</span>
+            <span className="hidden text-sm text-neutral-500 sm:inline">{t.workspaceSubtitle}</span>
+          </a>
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <ThemeToggle />
+            <span className="hidden sm:inline-flex">
+              <BuyMeCoffeeButton onClick={() => setShowCoffeeModal(true)} />
+            </span>
+          </div>
         </div>
-        
-        <div className="flex items-center gap-3">
-          <LanguageSwitcher />
-          <BuyMeCoffeeButton onClick={() => setShowCoffeeModal(true)} />
+        <div className="h-3 w-full">
+          <WarmingStripes
+            scenario={climateConfig.scenario}
+            label={t.stripesLabel}
+          />
         </div>
       </header>
 
-      <main className="mx-auto max-w-screen-2xl w-full px-6 pt-6">
+      <main id="espace-de-travail" className="mx-auto max-w-screen-2xl w-full px-4 sm:px-6 pt-8">
         <AnimatePresence mode="wait">
           {(status === 'idle' || status === 'uploading') && !report ? (
             <motion.div
@@ -873,23 +858,16 @@ const App: React.FC = () => {
         </AnimatePresence>
       </main>
 
-      {/* Global Footer */}
-      <footer className="mx-auto max-w-screen-2xl w-full px-6 mt-16 pt-6 border-t border-neutral-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
-        <div className="flex items-center gap-2">
-          <span>AI Data Analyst & Climate Modeling</span>
-          <span>•</span>
-          <span>Autonomous Business Intelligence</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => setShowCoffeeModal(true)}
-            className="inline-flex items-center gap-1.5 font-medium text-amber-800 hover:text-amber-900 transition hover:underline cursor-pointer"
-          >
-            <Coffee className="h-3.5 w-3.5 text-amber-600" />
-            <span>{t.supportOurWork}</span>
-          </button>
-        </div>
+      <footer className="mx-auto mt-16 flex w-full max-w-screen-2xl flex-col items-start justify-between gap-3 border-t border-neutral-200 px-6 pt-6 text-xs text-neutral-500 sm:flex-row sm:items-center">
+        <p className="max-w-2xl">{t.footerNote}</p>
+        <button
+          type="button"
+          onClick={() => setShowCoffeeModal(true)}
+          className="inline-flex cursor-pointer items-center gap-1.5 font-medium text-neutral-700 underline-offset-4 hover:underline"
+        >
+          <Coffee className="h-3.5 w-3.5" aria-hidden="true" />
+          <span>{t.supportOurWork}</span>
+        </button>
       </footer>
 
       {/* Buy Me A Coffee Fundraising Modal */}
@@ -933,27 +911,25 @@ const SetupPanel: React.FC<SetupProps> = ({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [gcsInput, setGcsInput] = useState('');
 
+  const climateOn = climateConfig.enabled;
+  const fileCount = files.length;
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="mb-6 mt-0 flex flex-col md:flex-row md:items-start md:justify-between gap-4 md:gap-8">
-        <h1 className="text-4xl sm:text-4xl lg:text-[3.5rem] leading-[1.05] tracking-tight font-sans font-semibold text-neutral-900 w-full md:w-1/2">
+    <div className="mx-auto max-w-6xl">
+      <div className="mb-8 max-w-3xl">
+        <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-neutral-900 sm:text-5xl">
           {t.heroTitle}
         </h1>
-        <div className="md:w-1/3 md:pt-1 flex flex-col justify-start">
-          <p className="text-sm leading-relaxed text-neutral-800 font-medium">
-            {t.heroSubtitle}
-          </p>
-          <p className="mt-3 text-xs text-neutral-600">
-            {t.heroDescription}
-          </p>
-        </div>
+        <p className="mt-3 max-w-2xl text-base leading-relaxed text-neutral-600">
+          {t.heroDescription}
+        </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="space-y-4 min-w-0">
           {/* Step 1: dataset */}
-          <section className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <div className="mb-3 flex items-center gap-2 text-sm font-medium text-neutral-700">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-neutral-900 text-[11px] text-white">1</span>
+          <section className="rounded-xl border border-neutral-200 bg-white p-5 sm:p-6">
+            <div className="mb-4 flex items-center gap-2.5 font-display text-lg font-semibold text-neutral-900">
+              <span aria-hidden="true" className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-survey font-display text-xs font-bold text-survey">1</span>
               {t.step1Title}
             </div>
 
@@ -1052,29 +1028,12 @@ const SetupPanel: React.FC<SetupProps> = ({
               </ul>
             )}
 
-            <div className="mt-4 text-[11px] leading-relaxed text-neutral-500 border-t border-neutral-100 pt-3">
-              By using this feature, you confirm that you have the necessary rights to any content that you upload. Do not generate content that infringes on others’ intellectual property or privacy rights. Your use of this generative AI service is subject to our{' '}
-              <a 
-                href="https://policies.google.com/terms/generative-ai/use-policy" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-io-blue hover:underline font-medium"
-              >
-                Prohibited Use Policy
+            <p className="mt-4 border-t border-neutral-100 pt-3 text-xs leading-relaxed text-neutral-500">
+              {t.dataNotice}{' '}
+              <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener noreferrer" className="font-medium text-survey underline-offset-2 hover:underline">
+                {t.dataNoticeLink}
               </a>
-              .
-              <br className="mt-1" />
-              Please note that uploads from Google Workspace may be used to develop and improve Google products and services in accordance with our{' '}
-              <a 
-                href="https://ai.google.dev/gemini-api/terms" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-io-blue hover:underline font-medium"
-              >
-                terms
-              </a>
-              .
-            </div>
+            </p>
           </section>
 
           {/* Step 2: CMIP6 Climate Scenarios & Models (WorldClim v2.1) */}
@@ -1086,9 +1045,9 @@ const SetupPanel: React.FC<SetupProps> = ({
           />
 
           {/* Step 3: question */}
-          <section className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm">
-            <div className="mb-3 flex items-center gap-2 text-sm font-medium text-neutral-700">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-neutral-900 text-[11px] text-white">3</span>
+          <section className="rounded-xl border border-neutral-200 bg-white p-5 sm:p-6">
+            <div className="mb-4 flex items-center gap-2.5 font-display text-lg font-semibold text-neutral-900">
+              <span aria-hidden="true" className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-survey font-display text-xs font-bold text-survey">3</span>
               {t.step3Title}
             </div>
             <textarea
@@ -1113,18 +1072,50 @@ const SetupPanel: React.FC<SetupProps> = ({
             </div>
           </section>
 
-          <button
-            onClick={onRun}
-            disabled={!canRun || isUploading}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-6 py-3.5 text-sm font-semibold text-white transition enabled:hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
-          >
-            {t.analyzeButton}
-          </button>
+      </div>
 
-          {/* Fundraising callout to support our work */}
+        <aside className="lg:sticky lg:top-6" aria-label={t.summaryTitle}>
+          <div className="rounded-xl border border-neutral-200 bg-white p-5">
+            <h2 className="font-display text-lg font-semibold text-neutral-900">{t.summaryTitle}</h2>
+            <dl className="mt-4 space-y-3 text-sm">
+              <div>
+                <dt className="text-neutral-500">{t.summaryData}</dt>
+                <dd className="mt-0.5 font-medium text-neutral-900">
+                  {fileCount === 0 ? <span className="text-neutral-400">{t.summaryNoData}</span> : files.map((f) => f.name).join(', ')}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500">{t.summaryClimate}</dt>
+                <dd className="mt-0.5 font-medium text-neutral-900">
+                  {climateOn ? `${climateConfig.scenarioName.split(' (')[0]}, ${climateConfig.model}, ${climateConfig.period}` : <span className="text-neutral-400">{t.summaryClimateOff}</span>}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500">{t.summaryQuestion}</dt>
+                <dd className="mt-0.5 line-clamp-3 font-medium text-neutral-900">
+                  {question.trim() ? question : <span className="text-neutral-400">{t.summaryNoQuestion}</span>}
+                </dd>
+              </div>
+            </dl>
+            <div className="fixed inset-x-0 bottom-0 z-30 border-t border-neutral-200 bg-white p-3 lg:static lg:mt-5 lg:border-0 lg:bg-transparent lg:p-0">
+              <button
+                onClick={onRun}
+                disabled={!canRun || isUploading}
+                className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-survey px-6 py-3 text-sm font-semibold text-white transition enabled:hover:brightness-110 disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-600"
+              >
+                {t.analyzeButton}
+              </button>
+              {!canRun && !isUploading && (
+                <p className="mt-2 text-center text-xs text-neutral-500 lg:text-left">{t.runHint}</p>
+              )}
+            </div>
+          </div>
           {onOpenCoffeeModal && (
-            <BuyMeCoffeeButton variant="callout" onClick={onOpenCoffeeModal} />
+            <button type="button" onClick={onOpenCoffeeModal} className="mt-3 w-full cursor-pointer text-left text-xs text-neutral-500 underline-offset-4 hover:underline">
+              {t.supportOurWork}
+            </button>
           )}
+        </aside>
       </div>
     </div>
   );

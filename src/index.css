@@ -1,17 +1,92 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Google+Sans:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+/* IBM Plex : une famille, trois rôles (texte, titres condensés, identifiants). */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * Jeu de jetons « instrument de mesure » :
+ *   papier minéral #F3F5F4 · encre ardoise #1A2433 · bleu relevé #1F5FA8 (actions)
+ *   sarcelle #0E7C66 (données, succès) · rouge-bleu divergent réservé au climat.
+ * Les palettes Tailwind utilisées partout dans le code (neutral, gray, blue…)
+ * sont remappées ici : toute l'interface change de ton sans réécrire chaque classe.
+ */
 @theme {
-  --font-sans: "Google Sans", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "IBM Plex Sans Condensed", "IBM Plex Sans", ui-sans-serif, sans-serif;
+  --font-serif: "IBM Plex Sans Condensed", ui-sans-serif, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
-  --color-io-blue: #4285f4;
-  --color-io-red: #ea4335;
-  --color-io-yellow: #fbbc04;
-  --color-io-green: #34a853;
+  /* Neutres froids (encre ardoise sur papier minéral) */
+  --color-neutral-50: #f6f8f7;
+  --color-neutral-100: #eceff0;
+  --color-neutral-200: #d8dee0;
+  --color-neutral-300: #bcc5ca;
+  --color-neutral-400: #626e79; /* ≥ 4,5:1 sur blanc (texte secondaire) */
+  --color-neutral-500: #58636e;
+  --color-neutral-600: #4b5662;
+  --color-neutral-700: #364150;
+  --color-neutral-800: #243040;
+  --color-neutral-900: #1a2433;
+  --color-neutral-950: #111925;
+  --color-gray-50: var(--color-neutral-50);
+  --color-gray-100: var(--color-neutral-100);
+  --color-gray-200: var(--color-neutral-200);
+  --color-gray-300: var(--color-neutral-300);
+  --color-gray-400: var(--color-neutral-400);
+  --color-gray-500: var(--color-neutral-500);
+  --color-gray-600: var(--color-neutral-600);
+  --color-gray-700: var(--color-neutral-700);
+  --color-gray-800: var(--color-neutral-800);
+  --color-gray-900: var(--color-neutral-900);
+  --color-slate-50: var(--color-neutral-50);
+  --color-slate-100: var(--color-neutral-100);
+  --color-slate-200: var(--color-neutral-200);
+  --color-slate-300: var(--color-neutral-300);
+  --color-slate-400: var(--color-neutral-400);
+  --color-slate-500: var(--color-neutral-500);
+  --color-slate-600: var(--color-neutral-600);
+  --color-slate-700: var(--color-neutral-700);
+  --color-slate-800: var(--color-neutral-800);
+  --color-slate-900: var(--color-neutral-900);
+  --color-zinc-50: var(--color-neutral-50);
+  --color-zinc-100: var(--color-neutral-100);
+  --color-zinc-200: var(--color-neutral-200);
+  --color-zinc-300: var(--color-neutral-300);
+  --color-zinc-400: var(--color-neutral-400);
+  --color-zinc-500: var(--color-neutral-500);
+  --color-zinc-600: var(--color-neutral-600);
+  --color-zinc-700: var(--color-neutral-700);
+  --color-zinc-800: var(--color-neutral-800);
+  --color-zinc-900: var(--color-neutral-900);
+
+  /* Bleu relevé : actions, sélection, focus */
+  --color-blue-50: #eef4fb;
+  --color-blue-100: #dbe7f6;
+  --color-blue-200: #b7cfec;
+  --color-blue-300: #88afdd;
+  --color-blue-400: #5589c9;
+  --color-blue-500: #2f6db6;
+  --color-blue-600: #1f5fa8;
+  --color-blue-700: #194d8a;
+  --color-blue-800: #153e6e;
+  --color-blue-900: #112f53;
+  --color-indigo-50: var(--color-blue-50);
+  --color-indigo-100: var(--color-blue-100);
+  --color-indigo-500: var(--color-blue-500);
+  --color-indigo-600: var(--color-blue-600);
+  --color-indigo-700: var(--color-blue-700);
+
+  /* Couleurs nommées de l'ancien thème, réalignées */
+  --color-io-blue: #1f5fa8;
+  --color-io-red: #b8352a;
+  --color-io-yellow: #c98a12;
+  --color-io-green: #0e7c66;
+
+  --color-paper: #f3f5f4;
+  --color-ink: #1a2433;
+  --color-survey: #1f5fa8;
+  --color-teal: #0e7c66;
 }
 
 @layer base {
@@ -21,31 +96,66 @@
     margin: 0;
     padding: 0;
   }
-  
-  html.dark {
-    color-scheme: dark;
-  }
+
+  html { background: var(--color-paper); }
+  html.dark { color-scheme: dark; background: #121820; }
 
   body {
-    transition: background-color 0.2s ease, color 0.2s ease;
+    font-feature-settings: "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
+
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.005em; }
+
+  :focus-visible { outline: 2px solid var(--color-survey); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+}
+
+/* Thème sombre : on inverse l'échelle des neutres plutôt que de réécrire les classes. */
+.dark {
+  --color-neutral-50: #1a222c;
+  --color-neutral-100: #212b36;
+  --color-neutral-200: #2e3a47;
+  --color-neutral-300: #3f4c5a;
+  --color-neutral-400: #8b98a5;
+  --color-neutral-500: #a3afba;
+  --color-neutral-600: #b2bcc5;
+  --color-neutral-700: #cbd3da;
+  --color-neutral-800: #dde3e8;
+  --color-neutral-900: #e9eef2;
+  --color-neutral-950: #f4f7f9;
+  --color-white: #1d2530;
+  --color-paper: #121820;
+  --color-blue-50: #16263a;
+  --color-blue-100: #1b3150;
+  --color-blue-600: #7fb2f0;
+  --color-blue-700: #a4c8f5;
+  --color-io-blue: #7fb2f0;
+  --color-survey: #7fb2f0;
 }
 
 @layer utilities {
-  .gradient-io {
-    background: linear-gradient(90deg, #4285f4, #34a853, #fbbc04, #ea4335);
-  }
-  .text-gradient-io {
-    background: linear-gradient(90deg, #4285f4, #34a853, #fbbc04, #ea4335);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
+  /* Anciennes classes conservées pour compatibilité, sans dégradé Google. */
+  .gradient-io { background: var(--color-survey); }
+  .text-gradient-io { color: var(--color-survey); }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
+/* Teintes sémantiques en thème sombre (badges, encadrés) */
+.dark {
+  --color-amber-50: #2c2414; --color-amber-100: #3a2e15; --color-amber-200: #5a4519;
+  --color-amber-700: #f2c36b; --color-amber-800: #f6d38f; --color-amber-900: #fae3b4;
+  --color-yellow-50: #2c2914; --color-yellow-100: #3a3415;
+  --color-red-50: #2e1a1a; --color-red-100: #3d1f1f; --color-red-200: #5c2727;
+  --color-red-600: #f08a80; --color-red-700: #f4a59d; --color-red-800: #f8c1bb;
+  --color-green-50: #142a20; --color-green-100: #183626; --color-green-700: #8fd9b0; --color-green-800: #b0e6c8;
+  --color-emerald-50: #142a24; --color-emerald-100: #18362e; --color-emerald-600: #6fd3b6; --color-emerald-700: #8fdfc7;
+  --color-orange-50: #2e2016; --color-orange-100: #3d2a1a; --color-orange-700: #f5b07a;
+  --color-purple-50: #241c33; --color-purple-100: #2e2342; --color-purple-700: #c9b0f2;
+  --color-sky-50: #14263a; --color-sky-100: #183150; --color-sky-700: #9ccaf2;
+}

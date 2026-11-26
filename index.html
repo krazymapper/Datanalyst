@@ -1,14 +1,23 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Remix AI Data Analyst</title>
-    <meta name="description" content="AI Data Analyst delivers interactive data analytics, WorldClim v2.1 CMIP6 climate scenario modeling, and automated report generation." />
-    <meta property="og:title" content="Remix AI Data Analyst" />
-    <meta property="og:description" content="AI Data Analyst delivers interactive data analytics, WorldClim v2.1 CMIP6 climate scenario modeling, and automated report generation." />
-    <script async defer src="https://apis.google.com/js/api.js"></script>
-    <script async defer src="https://accounts.google.com/gsi/client"></script>
+    <title>Datanalyst — analyste de données IA</title>
+    <meta name="description" content="Déposez vos fichiers CSV, ajoutez si besoin un contexte climatique CMIP6 (WorldClim v2.1), et un agent Gemini rédige un rapport : chiffres clés, graphiques, recommandations." />
+    <meta property="og:title" content="Datanalyst" />
+    <meta property="og:description" content="Posez une question à vos données : rapport automatique avec graphiques et recommandations." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231a2433'/%3E%3Crect x='6' y='18' width='4' height='8' fill='%2367a9cf'/%3E%3Crect x='14' y='12' width='4' height='14' fill='%23ef8a62'/%3E%3Crect x='22' y='6' width='4' height='20' fill='%23b2182b'/%3E%3C/svg%3E" />
+    <script>
+      // Thème appliqué avant le premier affichage (pas de flash) — même clé que src/theme.tsx
+      (function () {
+        try {
+          var t = localStorage.getItem('echo_data_analyst_theme') || 'system';
+          var dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

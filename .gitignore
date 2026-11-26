@@ -24,3 +24,11 @@ dist-ssr
 *.sw?
 service-account.json
 
+
+# Secrets et données d’exécution
+.env
+.env.*
+!.env.example
+.data/
+output/
+service-account*.json

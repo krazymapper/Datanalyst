@@ -111,14 +111,14 @@ export const ThemeToggle: React.FC<{ className?: string; showLabel?: boolean }> 
   const { theme, resolvedTheme, setTheme, toggleTheme } = useTheme();
 
   return (
-    <div className={`inline-flex items-center rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-0.5 shadow-xs transition ${className}`}>
+    <div className={`inline-flex items-center rounded-xl bg-white border border-neutral-200 p-0.5 shadow-xs transition ${className}`}>
       <button
         type="button"
         onClick={() => setTheme('light')}
         className={`relative flex items-center justify-center rounded-lg p-1.5 text-xs transition cursor-pointer ${
           theme === 'light'
-            ? 'bg-neutral-100 dark:bg-neutral-800 text-amber-600 dark:text-amber-400 font-semibold shadow-2xs'
-            : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100'
+            ? 'bg-neutral-100 text-amber-600 font-semibold shadow-2xs'
+            : 'text-neutral-500 hover:text-neutral-900'
         }`}
         title="Light mode"
         aria-label="Light mode"
@@ -133,7 +133,7 @@ export const ThemeToggle: React.FC<{ className?: string; showLabel?: boolean }> 
         className={`relative flex items-center justify-center rounded-lg p-1.5 text-xs transition cursor-pointer ${
           theme === 'dark'
             ? 'bg-neutral-800 text-blue-400 font-semibold shadow-2xs'
-            : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100'
+            : 'text-neutral-500 hover:text-neutral-900'
         }`}
         title="Dark mode"
         aria-label="Dark mode"
@@ -147,8 +147,8 @@ export const ThemeToggle: React.FC<{ className?: string; showLabel?: boolean }> 
         onClick={() => setTheme('system')}
         className={`relative flex items-center justify-center rounded-lg p-1.5 text-xs transition cursor-pointer ${
           theme === 'system'
-            ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-semibold shadow-2xs'
-            : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100'
+            ? 'bg-neutral-100 text-neutral-900 font-semibold shadow-2xs'
+            : 'text-neutral-500 hover:text-neutral-900'
         }`}
         title="System theme"
         aria-label="System theme"

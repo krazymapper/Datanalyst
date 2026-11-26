@@ -213,7 +213,8 @@ export function buildMetadataIdentifier(
 
 export function getDefaultClimateConfig(): CMIP6ClimateConfig {
   return {
-    enabled: true,
+    // Facultatif : désactivé par défaut pour ne pas noyer la tâche principale.
+    enabled: false,
     scenario: 'ssp245',
     scenarioName: 'SSP2-4.5 (Middle of the Road)',
     model: 'CanESM5',
@@ -310,7 +311,7 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({
           e.stopPropagation();
           setIsOpen((prev) => !prev);
         }}
-        className="p-1 rounded-full text-neutral-400 hover:text-io-blue hover:bg-blue-50 dark:hover:bg-blue-950/40 focus:outline-none focus:ring-1 focus:ring-io-blue transition cursor-pointer"
+        className="p-1 rounded-full text-neutral-400 hover:text-io-blue hover:bg-blue-50 focus:outline-none focus:ring-1 focus:ring-io-blue transition cursor-pointer"
       >
         <Info className="h-3.5 w-3.5" />
       </button>
@@ -319,24 +320,24 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({
         <div
           id={id}
           role="tooltip"
-          className={`absolute top-full mt-1.5 ${alignClass} ${widthClass} z-50 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/98 dark:bg-neutral-900/98 backdrop-blur-md p-3.5 shadow-2xl text-neutral-800 dark:text-neutral-200 text-xs max-h-[80vh] overflow-y-auto`}
+          className={`absolute top-full mt-1.5 ${alignClass} ${widthClass} z-50 rounded-xl border border-neutral-200 bg-white/98 backdrop-blur-md p-3.5 shadow-2xl text-neutral-800 text-xs max-h-[80vh] overflow-y-auto`}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-start justify-between gap-2 pb-2 border-b border-neutral-100 dark:border-neutral-800 mb-2.5">
-            <h4 className="font-semibold text-neutral-900 dark:text-neutral-100 text-xs flex items-center gap-1.5">
+          <div className="flex items-start justify-between gap-2 pb-2 border-b border-neutral-100 mb-2.5">
+            <h4 className="font-semibold text-neutral-900 text-xs flex items-center gap-1.5">
               <Globe className="h-3.5 w-3.5 text-io-blue shrink-0" />
               <span>{title}</span>
             </h4>
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 p-0.5 rounded text-xs leading-none cursor-pointer"
+              className="text-neutral-400 hover:text-neutral-700 p-0.5 rounded text-xs leading-none cursor-pointer"
               aria-label="Close tooltip"
             >
               ✕
             </button>
           </div>
-          <div className="text-[11px] leading-relaxed text-neutral-600 dark:text-neutral-300 space-y-2.5">
+          <div className="text-[11px] leading-relaxed text-neutral-600 space-y-2.5">
             {children}
           </div>
         </div>
@@ -431,25 +432,24 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
   return (
     <section 
       id="worldclim-cmip6-setup" 
-      className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 shadow-sm transition-all text-neutral-900 dark:text-neutral-100"
+      className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition-all text-neutral-900"
     >
       {/* Header & Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-neutral-100 dark:border-neutral-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-neutral-100">
         <div className="flex items-start gap-2.5">
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-neutral-900 dark:bg-neutral-100 text-[11px] text-white dark:text-neutral-900 shrink-0 mt-0.5 font-bold">
+          <span aria-hidden="true" className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 border-survey font-display text-xs font-bold text-survey">
             2
           </span>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 flex items-center gap-1.5">
-                <Globe className="h-4 w-4 text-io-blue" />
+              <h2 className="font-display text-lg font-semibold text-neutral-900">
                 {t.climateHeaderTitle}
               </h2>
-              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/40 text-io-blue border border-blue-100 dark:border-blue-900/50">
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-io-blue border border-blue-100">
                 {t.climateHeaderBadge}
               </span>
             </div>
-            <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400">
+            <p className="mt-0.5 text-xs text-neutral-500">
               {t.climateHeaderDesc}
             </p>
           </div>
@@ -459,7 +459,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
         <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
           <label 
             htmlFor="climate-metadata-toggle" 
-            className="text-xs font-medium text-neutral-600 dark:text-neutral-400 cursor-pointer select-none"
+            className="text-xs font-medium text-neutral-600 cursor-pointer select-none"
           >
             {t.climateToggleLabel}
           </label>
@@ -471,7 +471,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
             disabled={disabled}
             onClick={() => updateField('enabled', !config.enabled)}
             className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-io-blue focus:ring-offset-2 ${
-              config.enabled ? 'bg-io-blue' : 'bg-neutral-200 dark:bg-neutral-700'
+              config.enabled ? 'bg-io-blue' : 'bg-neutral-200'
             } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <span
@@ -488,18 +488,18 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
           {/* Quick Presets */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-1">
+              <span className="text-xs font-semibold text-neutral-700 flex items-center gap-1">
                 <Sparkles className="h-3.5 w-3.5 text-amber-500" />
                 Quick Climate Presets
               </span>
-              <span className="text-[11px] text-neutral-400 dark:text-neutral-500">Standard WorldClim v2.1 baselines</span>
+              <span className="text-[11px] text-neutral-400">Standard WorldClim v2.1 baselines</span>
             </div>
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
                 disabled={disabled}
                 onClick={() => applyPreset('ssp126', 'UKESM1-0-LL', '2041-2060')}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-emerald-200 dark:border-emerald-800/70 bg-emerald-50/60 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition cursor-pointer"
+                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-emerald-200 bg-emerald-50/60 text-emerald-800 hover:bg-emerald-100 transition cursor-pointer"
               >
                 🌱 Paris 1.5°C (SSP1-2.6 • UKESM1)
               </button>
@@ -507,7 +507,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 type="button"
                 disabled={disabled}
                 onClick={() => applyPreset('ssp245', 'CanESM5', '2041-2060')}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-blue-200 dark:border-blue-800/70 bg-blue-50/60 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition cursor-pointer"
+                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-blue-200 bg-blue-50/60 text-blue-800 hover:bg-blue-100 transition cursor-pointer"
               >
                 ⚖️ Moderate 2050 (SSP2-4.5 • CanESM5)
               </button>
@@ -515,7 +515,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 type="button"
                 disabled={disabled}
                 onClick={() => applyPreset('ssp370', 'CNRM-CM6-1', '2041-2060')}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-amber-200 dark:border-amber-800/70 bg-amber-50/60 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition cursor-pointer"
+                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-amber-200 bg-amber-50/60 text-amber-800 hover:bg-amber-100 transition cursor-pointer"
               >
                 ⚠️ Regional Rivalry (SSP3-7.0 • CNRM-CM6)
               </button>
@@ -523,7 +523,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 type="button"
                 disabled={disabled}
                 onClick={() => applyPreset('ssp585', 'GFDL-ESM4', '2081-2100')}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-rose-200 dark:border-rose-800/70 bg-rose-50/60 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition cursor-pointer"
+                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-rose-200 bg-rose-50/60 text-rose-800 hover:bg-rose-100 transition cursor-pointer"
               >
                 🔥 Worst-Case 2100 (SSP5-8.5 • GFDL)
               </button>
@@ -543,7 +543,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
               <div className="flex items-center gap-1.5">
                 <label 
                   htmlFor="cmip6-scenario-select" 
-                  className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-1.5"
+                  className="text-xs font-semibold text-neutral-700 flex items-center gap-1.5"
                 >
                   <Sliders className="h-3.5 w-3.5 text-io-blue" />
                   CMIP6 Climate Scenario (Shared Socioeconomic Pathway - SSP)
@@ -556,73 +556,73 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                   buttonLabel="Scenario explanation and differences tooltip"
                   widthClass="w-80 sm:w-[460px]"
                 >
-                  <p className="text-neutral-700 dark:text-neutral-300 font-medium">
+                  <p className="text-neutral-700 font-medium">
                     Shared Socioeconomic Pathways (SSPs) combine future atmospheric greenhouse gas concentrations with distinct socioeconomic trajectories:
                   </p>
 
                   {/* SSP1-2.6 */}
-                  <div className="p-2.5 rounded-lg border border-emerald-200 dark:border-emerald-800/80 bg-emerald-50/60 dark:bg-emerald-950/40 space-y-1">
-                    <div className="flex items-center justify-between text-emerald-950 dark:text-emerald-200 font-semibold">
+                  <div className="p-2.5 rounded-lg border border-emerald-200 bg-emerald-50/60 space-y-1">
+                    <div className="flex items-center justify-between text-emerald-950 font-semibold">
                       <span className="flex items-center gap-1">
-                        <Leaf className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                        <Leaf className="h-3.5 w-3.5 text-emerald-600" />
                         SSP1-2.6: Sustainability ("Taking the Green Road")
                       </span>
-                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold">2.6 W/m²</span>
+                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">2.6 W/m²</span>
                     </div>
-                    <p className="text-neutral-700 dark:text-neutral-300">
-                      <strong className="text-emerald-950 dark:text-emerald-300">Emissions:</strong> Drastic, immediate decarbonization. Net-zero greenhouse gases achieved between 2050 and 2075.
+                    <p className="text-neutral-700">
+                      <strong className="text-emerald-950">Emissions:</strong> Drastic, immediate decarbonization. Net-zero greenhouse gases achieved between 2050 and 2075.
                     </p>
-                    <p className="text-neutral-700 dark:text-neutral-300">
-                      <strong className="text-emerald-950 dark:text-emerald-300">2100 Warming:</strong> <strong>+1.5°C to +1.8°C</strong> above pre-industrial levels (consistent with the Paris Agreement target).
+                    <p className="text-neutral-700">
+                      <strong className="text-emerald-950">2100 Warming:</strong> <strong>+1.5°C to +1.8°C</strong> above pre-industrial levels (consistent with the Paris Agreement target).
                     </p>
-                    <p className="text-neutral-600 dark:text-neutral-400 text-[10px]">
+                    <p className="text-neutral-600 text-[10px]">
                       <em>Characteristics:</em> Global cooperation, accelerated renewable energy adoption, low resource intensity, shift toward sustainable consumption, and minimal adaptation hurdles.
                     </p>
                   </div>
 
                   {/* SSP2-4.5 */}
-                  <div className="p-2.5 rounded-lg border border-blue-200 dark:border-blue-800/80 bg-blue-50/60 dark:bg-blue-950/40 space-y-1">
-                    <div className="flex items-center justify-between text-blue-950 dark:text-blue-200 font-semibold">
+                  <div className="p-2.5 rounded-lg border border-blue-200 bg-blue-50/60 space-y-1">
+                    <div className="flex items-center justify-between text-blue-950 font-semibold">
                       <span className="flex items-center gap-1">
-                        <Scale className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                        <Scale className="h-3.5 w-3.5 text-blue-600" />
                         SSP2-4.5: Middle of the Road ("Current Policy Trajectory")
                       </span>
-                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 font-bold">4.5 W/m²</span>
+                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">4.5 W/m²</span>
                     </div>
-                    <p className="text-neutral-700 dark:text-neutral-300">
-                      <strong className="text-blue-950 dark:text-blue-300">Emissions:</strong> Historical socioeconomic trends continue. Global CO₂ emissions peak around 2040 before declining gradually.
+                    <p className="text-neutral-700">
+                      <strong className="text-blue-950">Emissions:</strong> Historical socioeconomic trends continue. Global CO₂ emissions peak around 2040 before declining gradually.
                     </p>
-                    <p className="text-neutral-700 dark:text-neutral-300">
-                      <strong className="text-blue-950 dark:text-blue-300">2100 Warming:</strong> <strong>~+2.7°C</strong> above pre-industrial levels.
+                    <p className="text-neutral-700">
+                      <strong className="text-blue-950">2100 Warming:</strong> <strong>~+2.7°C</strong> above pre-industrial levels.
                     </p>
-                    <p className="text-neutral-600 dark:text-neutral-400 text-[10px]">
+                    <p className="text-neutral-600 text-[10px]">
                       <em>Characteristics:</em> Moderate mitigation efforts, uneven progress across regions, standard baseline benchmark for current national pledges.
                     </p>
                   </div>
 
                   {/* SSP5-8.5 */}
-                  <div className="p-2.5 rounded-lg border border-rose-200 dark:border-rose-800/80 bg-rose-50/60 dark:bg-rose-950/40 space-y-1">
-                    <div className="flex items-center justify-between text-rose-950 dark:text-rose-200 font-semibold">
+                  <div className="p-2.5 rounded-lg border border-rose-200 bg-rose-50/60 space-y-1">
+                    <div className="flex items-center justify-between text-rose-950 font-semibold">
                       <span className="flex items-center gap-1">
-                        <Flame className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />
+                        <Flame className="h-3.5 w-3.5 text-rose-600" />
                         SSP5-8.5: Fossil-Fueled Development ("Worst-Case High Emissions")
                       </span>
-                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-300 font-bold">8.5 W/m²</span>
+                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 font-bold">8.5 W/m²</span>
                     </div>
-                    <p className="text-neutral-700 dark:text-neutral-300">
-                      <strong className="text-rose-950 dark:text-rose-300">Emissions:</strong> Rapid, unconstrained economic expansion powered by intensive fossil fuel exploitation. No climate mitigation policies.
+                    <p className="text-neutral-700">
+                      <strong className="text-rose-950">Emissions:</strong> Rapid, unconstrained economic expansion powered by intensive fossil fuel exploitation. No climate mitigation policies.
                     </p>
-                    <p className="text-neutral-700 dark:text-neutral-300">
-                      <strong className="text-rose-950 dark:text-rose-300">2100 Warming:</strong> <strong>~+4.4°C</strong> above pre-industrial levels (severe, catastrophic planetary shifts).
+                    <p className="text-neutral-700">
+                      <strong className="text-rose-950">2100 Warming:</strong> <strong>~+4.4°C</strong> above pre-industrial levels (severe, catastrophic planetary shifts).
                     </p>
-                    <p className="text-neutral-600 dark:text-neutral-400 text-[10px]">
+                    <p className="text-neutral-600 text-[10px]">
                       <em>Characteristics:</em> Tripling of coal/oil usage, extreme vulnerability to thermal stress, severe climate hazards, and maximum adaptation challenges.
                     </p>
                   </div>
 
-                  <div className="pt-1.5 border-t border-neutral-100 dark:border-neutral-800 text-[10px] text-neutral-500 dark:text-neutral-400 flex items-center justify-between">
+                  <div className="pt-1.5 border-t border-neutral-100 text-[10px] text-neutral-500 flex items-center justify-between">
                     <span>WorldClim v2.1 downscaled CMIP6</span>
-                    <span className="font-medium text-neutral-700 dark:text-neutral-300">IPCC AR6 Working Group I</span>
+                    <span className="font-medium text-neutral-700">IPCC AR6 Working Group I</span>
                   </div>
                 </InfoTooltip>
               </div>
@@ -631,12 +631,12 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowScenarioComparison(!showScenarioComparison)}
-                  className="text-[11px] text-io-blue dark:text-blue-400 hover:underline flex items-center gap-1 font-medium cursor-pointer"
+                  className="text-[11px] text-io-blue hover:underline flex items-center gap-1 font-medium cursor-pointer"
                 >
                   <Sparkles className="h-3 w-3" />
                   {showScenarioComparison ? 'Hide comparison' : 'Compare SSP1 vs SSP2 vs SSP5'}
                 </button>
-                <span className="text-[11px] text-neutral-400 dark:text-neutral-500 font-mono hidden sm:inline">
+                <span className="text-[11px] text-neutral-400 font-mono hidden sm:inline">
                   Radiative forcing: {selectedScenario.forcing}
                 </span>
               </div>
@@ -649,7 +649,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 value={config.scenario}
                 disabled={disabled}
                 onChange={(e) => updateField('scenario', e.target.value as CMIP6ScenarioId)}
-                className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:border-io-blue focus:ring-1 focus:ring-blue-100 dark:focus:ring-blue-900/40 outline-none transition cursor-pointer"
+                className="w-full px-3 py-2 text-xs font-medium rounded-xl border border-neutral-300 bg-white text-neutral-900 focus:border-io-blue focus:ring-1 focus:ring-blue-100 outline-none transition cursor-pointer"
               >
                 {CMIP6_SCENARIOS.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -661,59 +661,59 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
 
             {/* Expandable Side-by-Side Comparison Table */}
             {showScenarioComparison && (
-              <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/80 dark:bg-neutral-850 p-3.5 space-y-2 text-xs">
-                <div className="flex items-center justify-between pb-1.5 border-b border-neutral-200/70 dark:border-neutral-800">
-                  <h4 className="font-semibold text-neutral-900 dark:text-neutral-100 flex items-center gap-1.5 text-xs">
+              <div className="rounded-xl border border-neutral-200 bg-neutral-50/80 p-3.5 space-y-2 text-xs">
+                <div className="flex items-center justify-between pb-1.5 border-b border-neutral-200/70">
+                  <h4 className="font-semibold text-neutral-900 flex items-center gap-1.5 text-xs">
                     <Scale className="h-3.5 w-3.5 text-io-blue" />
                     Key Differences: SSP1-2.6 vs SSP2-4.5 vs SSP5-8.5
                   </h4>
-                  <span className="text-[10px] text-neutral-500 dark:text-neutral-400">WorldClim v2.1 Benchmarks</span>
+                  <span className="text-[10px] text-neutral-500">WorldClim v2.1 Benchmarks</span>
                 </div>
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-[11px] border-collapse">
                     <thead>
-                      <tr className="border-b border-neutral-200 dark:border-neutral-750 text-neutral-600 dark:text-neutral-300">
+                      <tr className="border-b border-neutral-200 text-neutral-600">
                         <th className="py-1.5 pr-2 font-semibold">Attribute</th>
-                        <th className="py-1.5 px-2 font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50/40 dark:bg-emerald-950/30 rounded-t">SSP1-2.6 (Sustainability)</th>
-                        <th className="py-1.5 px-2 font-semibold text-blue-800 dark:text-blue-300 bg-blue-50/40 dark:bg-blue-950/30 rounded-t">SSP2-4.5 (Middle of Road)</th>
-                        <th className="py-1.5 pl-2 font-semibold text-rose-800 dark:text-rose-300 bg-rose-50/40 dark:bg-rose-950/30 rounded-t">SSP5-8.5 (Fossil Development)</th>
+                        <th className="py-1.5 px-2 font-semibold text-emerald-800 bg-emerald-50/40 rounded-t">SSP1-2.6 (Sustainability)</th>
+                        <th className="py-1.5 px-2 font-semibold text-blue-800 bg-blue-50/40 rounded-t">SSP2-4.5 (Middle of Road)</th>
+                        <th className="py-1.5 pl-2 font-semibold text-rose-800 bg-rose-50/40 rounded-t">SSP5-8.5 (Fossil Development)</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-200/70 dark:divide-neutral-800 text-neutral-700 dark:text-neutral-300">
+                    <tbody className="divide-y divide-neutral-200/70 text-neutral-700">
                       <tr>
-                        <td className="py-1.5 pr-2 font-medium text-neutral-900 dark:text-neutral-200">Radiative Forcing</td>
-                        <td className="py-1.5 px-2 font-mono text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50/20 dark:bg-emerald-950/20">2.6 W/m²</td>
-                        <td className="py-1.5 px-2 font-mono text-blue-700 dark:text-blue-400 font-bold bg-blue-50/20 dark:bg-blue-950/20">4.5 W/m²</td>
-                        <td className="py-1.5 pl-2 font-mono text-rose-700 dark:text-rose-400 font-bold bg-rose-50/20 dark:bg-rose-950/20">8.5 W/m²</td>
+                        <td className="py-1.5 pr-2 font-medium text-neutral-900">Radiative Forcing</td>
+                        <td className="py-1.5 px-2 font-mono text-emerald-700 font-bold bg-emerald-50/20">2.6 W/m²</td>
+                        <td className="py-1.5 px-2 font-mono text-blue-700 font-bold bg-blue-50/20">4.5 W/m²</td>
+                        <td className="py-1.5 pl-2 font-mono text-rose-700 font-bold bg-rose-50/20">8.5 W/m²</td>
                       </tr>
                       <tr>
-                        <td className="py-1.5 pr-2 font-medium text-neutral-900 dark:text-neutral-200">2100 Temperature</td>
-                        <td className="py-1.5 px-2 font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50/20 dark:bg-emerald-950/20">+1.5°C to 1.8°C</td>
-                        <td className="py-1.5 px-2 font-semibold text-blue-800 dark:text-blue-300 bg-blue-50/20 dark:bg-blue-950/20">+2.7°C</td>
-                        <td className="py-1.5 pl-2 font-semibold text-rose-800 dark:text-rose-300 bg-rose-50/20 dark:bg-rose-950/20">+4.4°C</td>
+                        <td className="py-1.5 pr-2 font-medium text-neutral-900">2100 Temperature</td>
+                        <td className="py-1.5 px-2 font-semibold text-emerald-800 bg-emerald-50/20">+1.5°C to 1.8°C</td>
+                        <td className="py-1.5 px-2 font-semibold text-blue-800 bg-blue-50/20">+2.7°C</td>
+                        <td className="py-1.5 pl-2 font-semibold text-rose-800 bg-rose-50/20">+4.4°C</td>
                       </tr>
                       <tr>
-                        <td className="py-1.5 pr-2 font-medium text-neutral-900 dark:text-neutral-200">CO₂ Peak Year</td>
-                        <td className="py-1.5 px-2 bg-emerald-50/20 dark:bg-emerald-950/20">~2025 (Net-zero by ~2050–2075)</td>
-                        <td className="py-1.5 px-2 bg-blue-50/20 dark:bg-blue-950/20">~2040 (Gradual slow decline)</td>
-                        <td className="py-1.5 pl-2 bg-rose-50/20 dark:bg-rose-950/20">No peak (Steep rise past 2100)</td>
+                        <td className="py-1.5 pr-2 font-medium text-neutral-900">CO₂ Peak Year</td>
+                        <td className="py-1.5 px-2 bg-emerald-50/20">~2025 (Net-zero by ~2050–2075)</td>
+                        <td className="py-1.5 px-2 bg-blue-50/20">~2040 (Gradual slow decline)</td>
+                        <td className="py-1.5 pl-2 bg-rose-50/20">No peak (Steep rise past 2100)</td>
                       </tr>
                       <tr>
-                        <td className="py-1.5 pr-2 font-medium text-neutral-900 dark:text-neutral-200">Policy Ambition</td>
-                        <td className="py-1.5 px-2 bg-emerald-50/20 dark:bg-emerald-950/20">Paris Agreement stringent targets</td>
-                        <td className="py-1.5 px-2 bg-blue-50/20 dark:bg-blue-950/20">Current moderate commitments</td>
-                        <td className="py-1.5 pl-2 bg-rose-50/20 dark:bg-rose-950/20">No climate mitigation policy</td>
+                        <td className="py-1.5 pr-2 font-medium text-neutral-900">Policy Ambition</td>
+                        <td className="py-1.5 px-2 bg-emerald-50/20">Paris Agreement stringent targets</td>
+                        <td className="py-1.5 px-2 bg-blue-50/20">Current moderate commitments</td>
+                        <td className="py-1.5 pl-2 bg-rose-50/20">No climate mitigation policy</td>
                       </tr>
                       <tr>
-                        <td className="py-1.5 pr-2 font-medium text-neutral-900 dark:text-neutral-200">Best Used For</td>
-                        <td className="py-1.5 px-2 bg-emerald-50/20 dark:bg-emerald-950/20">Decarbonization target assessments</td>
-                        <td className="py-1.5 px-2 bg-blue-50/20 dark:bg-blue-950/20">Standard planning & business baseline</td>
-                        <td className="py-1.5 pl-2 bg-rose-50/20 dark:bg-rose-950/20">Worst-case stress tests & hazards</td>
+                        <td className="py-1.5 pr-2 font-medium text-neutral-900">Best Used For</td>
+                        <td className="py-1.5 px-2 bg-emerald-50/20">Decarbonization target assessments</td>
+                        <td className="py-1.5 px-2 bg-blue-50/20">Standard planning & business baseline</td>
+                        <td className="py-1.5 pl-2 bg-rose-50/20">Worst-case stress tests & hazards</td>
                       </tr>
                       <tr>
-                        <td className="py-2 pr-2 font-medium text-neutral-900 dark:text-neutral-200">Select</td>
-                        <td className="py-2 px-2 bg-emerald-50/20 dark:bg-emerald-950/20">
+                        <td className="py-2 pr-2 font-medium text-neutral-900">Select</td>
+                        <td className="py-2 px-2 bg-emerald-50/20">
                           <button
                             type="button"
                             onClick={() => updateField('scenario', 'ssp126')}
@@ -722,7 +722,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                             Apply SSP1-2.6
                           </button>
                         </td>
-                        <td className="py-2 px-2 bg-blue-50/20 dark:bg-blue-950/20">
+                        <td className="py-2 px-2 bg-blue-50/20">
                           <button
                             type="button"
                             onClick={() => updateField('scenario', 'ssp245')}
@@ -731,7 +731,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                             Apply SSP2-4.5
                           </button>
                         </td>
-                        <td className="py-2 pl-2 bg-rose-50/20 dark:bg-rose-950/20">
+                        <td className="py-2 pl-2 bg-rose-50/20">
                           <button
                             type="button"
                             onClick={() => updateField('scenario', 'ssp585')}
@@ -753,19 +753,19 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 const isSelected = config.scenario === sc.id;
                 const borderClass = isSelected
                   ? sc.color === 'emerald'
-                    ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/40 ring-1 ring-emerald-400 dark:ring-emerald-500/50'
+                    ? 'border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-400'
                     : sc.color === 'blue'
-                    ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/40 ring-1 ring-blue-400 dark:ring-blue-500/50'
+                    ? 'border-blue-500 bg-blue-50/50 ring-1 ring-blue-400'
                     : sc.color === 'amber'
-                    ? 'border-amber-500 bg-amber-50/50 dark:bg-amber-950/40 ring-1 ring-amber-400 dark:ring-amber-500/50'
-                    : 'border-rose-500 bg-rose-50/50 dark:bg-rose-950/40 ring-1 ring-rose-400 dark:ring-rose-500/50'
-                  : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300 dark:hover:border-neutral-700';
+                    ? 'border-amber-500 bg-amber-50/50 ring-1 ring-amber-400'
+                    : 'border-rose-500 bg-rose-50/50 ring-1 ring-rose-400'
+                  : 'border-neutral-200 bg-white hover:border-neutral-300';
 
                 const badgeBg = 
-                  sc.color === 'emerald' ? 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300' :
-                  sc.color === 'blue' ? 'bg-blue-100 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300' :
-                  sc.color === 'amber' ? 'bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300' :
-                  'bg-rose-100 dark:bg-rose-950/70 text-rose-800 dark:text-rose-300';
+                  sc.color === 'emerald' ? 'bg-emerald-100 text-emerald-800' :
+                  sc.color === 'blue' ? 'bg-blue-100 text-blue-800' :
+                  sc.color === 'amber' ? 'bg-amber-100 text-amber-800' :
+                  'bg-rose-100 text-rose-800';
 
                 return (
                   <button
@@ -777,21 +777,21 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                   >
                     <div>
                       <div className="flex items-center justify-between gap-1 mb-1">
-                        <span className="font-mono font-bold text-xs text-neutral-900 dark:text-neutral-100">
+                        <span className="font-mono font-bold text-xs text-neutral-900">
                           {sc.code}
                         </span>
                         <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${badgeBg}`}>
                           {sc.forcing}
                         </span>
                       </div>
-                      <p className="text-xs font-semibold text-neutral-800 dark:text-neutral-200 line-clamp-1">{sc.name}</p>
-                      <p className="mt-1 text-[11px] text-neutral-600 dark:text-neutral-400 leading-snug line-clamp-2">
+                      <p className="text-xs font-semibold text-neutral-800 line-clamp-1">{sc.name}</p>
+                      <p className="mt-1 text-[11px] text-neutral-600 leading-snug line-clamp-2">
                         {sc.description}
                       </p>
                     </div>
-                    <div className="mt-2.5 pt-2 border-t border-neutral-100/80 dark:border-neutral-800 flex items-center justify-between text-[10px] text-neutral-500 dark:text-neutral-400">
+                    <div className="mt-2.5 pt-2 border-t border-neutral-100/80 flex items-center justify-between text-[10px] text-neutral-500">
                       <span>2100 rise:</span>
-                      <span className="font-semibold text-neutral-700 dark:text-neutral-300">{sc.tempRise2100}</span>
+                      <span className="font-semibold text-neutral-700">{sc.tempRise2100}</span>
                     </div>
                   </button>
                 );
@@ -819,7 +819,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 <div className="flex items-center gap-1.5">
                   <label 
                     htmlFor="cmip6-model-select" 
-                    className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-1.5"
+                    className="text-xs font-semibold text-neutral-700 flex items-center gap-1.5"
                   >
                     <Compass className="h-3.5 w-3.5 text-io-blue" />
                     CMIP6 Global Climate Model (GCM)
@@ -832,28 +832,28 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                     buttonLabel="Model explanation and sensitivity tooltip"
                     widthClass="w-80 sm:w-[440px]"
                   >
-                    <p className="text-neutral-700 dark:text-neutral-300 font-medium">
+                    <p className="text-neutral-700 font-medium">
                       WorldClim v2.1 provides monthly downscaled projections from 12 General Circulation Models (GCMs) from international modeling groups:
                     </p>
 
                     <div className="space-y-2">
-                      <div className="p-2.5 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 space-y-1">
-                        <div className="font-semibold text-neutral-900 dark:text-neutral-100 flex items-center justify-between text-[11px]">
+                      <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200 space-y-1">
+                        <div className="font-semibold text-neutral-900 flex items-center justify-between text-[11px]">
                           <span>🌡️ Climate Sensitivity (ECS)</span>
-                          <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-normal">Warming per 2× CO₂</span>
+                          <span className="text-[10px] text-neutral-500 font-normal">Warming per 2× CO₂</span>
                         </div>
-                        <p className="text-neutral-600 dark:text-neutral-300 text-[10px] leading-snug">
+                        <p className="text-neutral-600 text-[10px] leading-snug">
                           • <strong>High Sensitivity (&gt;5.0°C):</strong> <em>CanESM5 (5.6°C)</em> & <em>UKESM1-0-LL (5.4°C)</em>. Feature strong positive cloud-radiation feedbacks, simulating more rapid warming and sharper hydrological shifts.<br />
                           • <strong>Intermediate Sensitivity (4.0–4.9°C):</strong> <em>CNRM-CM6-1 (4.9°C)</em>, <em>IPSL-CM6A-LR (4.8°C)</em>, <em>EC-Earth3-Veg (4.3°C)</em>.<br />
                           • <strong>Moderate Sensitivity (&lt;3.5°C):</strong> <em>GFDL-ESM4 (2.7°C)</em>, <em>MIROC6 (2.6°C)</em>, <em>MPI-ESM1-2-HR (3.0°C)</em>, <em>BCC-CSM2-MR (3.0°C)</em>. Offer more conservative, stable temperature trajectories.
                         </p>
                       </div>
 
-                      <div className="p-2.5 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 space-y-1">
-                        <div className="font-semibold text-neutral-900 dark:text-neutral-100 text-[11px]">
+                      <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200 space-y-1">
+                        <div className="font-semibold text-neutral-900 text-[11px]">
                           🗺️ Regional Modeling Highlights
                         </div>
-                        <p className="text-neutral-600 dark:text-neutral-300 text-[10px] leading-snug">
+                        <p className="text-neutral-600 text-[10px] leading-snug">
                           • <strong>Americas:</strong> CanESM5 (CCCma, Canada) & GFDL-ESM4 (NOAA, USA)<br />
                           • <strong>Europe:</strong> CNRM-CM6-1 (Météo-France) & MPI-ESM1-2-HR (Max Planck)<br />
                           • <strong>Asia & Monsoons:</strong> MIROC6, BCC-CSM2-MR, MRI-ESM2-0<br />
@@ -861,9 +861,9 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                         </p>
                       </div>
 
-                      <div className="p-2 rounded-lg bg-blue-50/60 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-900/50 text-[10px] text-blue-900 dark:text-blue-300 space-y-0.5">
+                      <div className="p-2 rounded-lg bg-blue-50/60 border border-blue-200/80 text-[10px] text-blue-900 space-y-0.5">
                         <span className="font-semibold">Downscaling Method:</span>
-                        <p className="text-blue-800 dark:text-blue-300 leading-snug">
+                        <p className="text-blue-800 leading-snug">
                           Projections are bias-corrected using the delta method against WorldClim baseline climatology (1970–2000), producing continuous high-resolution surfaces down to 30 arc-seconds (~1 km²).
                         </p>
                       </div>
@@ -874,7 +874,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowModelDetails(!showModelDetails)}
-                  className="text-[11px] text-io-blue dark:text-blue-400 hover:underline flex items-center gap-0.5 cursor-pointer"
+                  className="text-[11px] text-io-blue hover:underline flex items-center gap-0.5 cursor-pointer"
                 >
                   {showModelDetails ? (
                     <>Hide details <ChevronUp className="h-3 w-3" /></>
@@ -890,7 +890,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 value={config.model}
                 disabled={disabled}
                 onChange={(e) => updateField('model', e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:border-io-blue focus:ring-1 focus:ring-blue-100 dark:focus:ring-blue-900/40 outline-none transition cursor-pointer"
+                className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-300 bg-white text-neutral-900 focus:border-io-blue focus:ring-1 focus:ring-blue-100 outline-none transition cursor-pointer"
               >
                 {CMIP6_MODELS.map((m) => (
                   <option key={m.id} value={m.id}>
@@ -900,14 +900,14 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
               </select>
 
               {/* Model institution & characteristics card */}
-              <div className="p-2.5 rounded-lg bg-neutral-50 dark:bg-neutral-850 border border-neutral-200/80 dark:border-neutral-800 text-[11px] text-neutral-600 dark:text-neutral-400">
-                <div className="flex items-center justify-between text-neutral-800 dark:text-neutral-200 font-medium">
+              <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200/80 text-[11px] text-neutral-600">
+                <div className="flex items-center justify-between text-neutral-800 font-medium">
                   <span>{selectedModel.name} ({selectedModel.country})</span>
-                  <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-mono">{selectedModel.sensitivity || 'WorldClim Verified'}</span>
+                  <span className="text-[10px] text-neutral-500 font-mono">{selectedModel.sensitivity || 'WorldClim Verified'}</span>
                 </div>
-                <p className="mt-0.5 text-neutral-500 dark:text-neutral-400 text-[11px] truncate">{selectedModel.institution}</p>
+                <p className="mt-0.5 text-neutral-500 text-[11px] truncate">{selectedModel.institution}</p>
                 {showModelDetails && (
-                  <p className="mt-1.5 pt-1.5 border-t border-neutral-200 dark:border-neutral-750 text-neutral-700 dark:text-neutral-300 text-[11px] leading-relaxed">
+                  <p className="mt-1.5 pt-1.5 border-t border-neutral-200 text-neutral-700 text-[11px] leading-relaxed">
                     <span className="font-semibold">Characteristics:</span> {selectedModel.characteristics}
                   </p>
                 )}
@@ -920,7 +920,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
               <div className="space-y-1.5">
                 <label 
                   htmlFor="cmip6-period-select" 
-                  className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-1"
+                  className="text-xs font-semibold text-neutral-700 flex items-center gap-1"
                 >
                   <Calendar className="h-3.5 w-3.5 text-io-blue" />
                   Time Horizon
@@ -930,7 +930,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                   value={config.period}
                   disabled={disabled}
                   onChange={(e) => updateField('period', e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:border-io-blue focus:ring-1 focus:ring-blue-100 dark:focus:ring-blue-900/40 outline-none transition cursor-pointer"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-300 bg-white text-neutral-900 focus:border-io-blue focus:ring-1 focus:ring-blue-100 outline-none transition cursor-pointer"
                 >
                   {CMIP6_PERIODS.map((p) => (
                     <option key={p.id} value={p.id}>
@@ -938,7 +938,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                     </option>
                   ))}
                 </select>
-                <div className="text-[10px] text-neutral-400 dark:text-neutral-500">
+                <div className="text-[10px] text-neutral-400">
                   Averaged over 20-year future window
                 </div>
               </div>
@@ -947,7 +947,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
               <div className="space-y-1.5">
                 <label 
                   htmlFor="cmip6-resolution-select" 
-                  className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-1"
+                  className="text-xs font-semibold text-neutral-700 flex items-center gap-1"
                 >
                   <Layers className="h-3.5 w-3.5 text-io-blue" />
                   Resolution
@@ -957,7 +957,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                   value={config.resolution}
                   disabled={disabled}
                   onChange={(e) => updateField('resolution', e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:border-io-blue focus:ring-1 focus:ring-blue-100 dark:focus:ring-blue-900/40 outline-none transition cursor-pointer"
+                  className="w-full px-3 py-2 text-xs rounded-xl border border-neutral-300 bg-white text-neutral-900 focus:border-io-blue focus:ring-1 focus:ring-blue-100 outline-none transition cursor-pointer"
                 >
                   {CMIP6_RESOLUTIONS.map((r) => (
                     <option key={r.id} value={r.id}>
@@ -965,7 +965,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                     </option>
                   ))}
                 </select>
-                <div className="text-[10px] text-neutral-400 dark:text-neutral-500">
+                <div className="text-[10px] text-neutral-400">
                   {CMIP6_RESOLUTIONS.find((r) => r.id === config.resolution)?.desc}
                 </div>
               </div>
@@ -974,7 +974,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
 
           {/* Climate Variable Target */}
           <div>
-            <label className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 mb-2 flex items-center gap-1.5">
+            <label className="text-xs font-semibold text-neutral-700 mb-2 flex items-center gap-1.5">
               <Thermometer className="h-3.5 w-3.5 text-io-blue" />
               WorldClim v2.1 Variable Target
             </label>
@@ -990,15 +990,15 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                     onClick={() => updateField('variable', v.id)}
                     className={`p-2.5 rounded-xl border text-left transition cursor-pointer ${
                       isSelected
-                        ? 'border-neutral-900 dark:border-neutral-100 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 shadow-xs'
-                        : 'border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-850 hover:bg-neutral-100/80 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300'
+                        ? 'border-neutral-900 bg-neutral-900 text-white shadow-xs'
+                        : 'border-neutral-200 bg-neutral-50 hover:bg-neutral-100/80 text-neutral-700'
                     }`}
                   >
                     <div className="flex items-center gap-1.5 font-medium text-xs">
-                      <IconComponent className={`h-3.5 w-3.5 ${isSelected ? 'text-blue-300 dark:text-blue-600' : 'text-neutral-500 dark:text-neutral-400'}`} />
+                      <IconComponent className={`h-3.5 w-3.5 ${isSelected ? 'text-blue-300' : 'text-neutral-500'}`} />
                       <span className="truncate">{v.label}</span>
                     </div>
-                    <p className={`mt-1 text-[10px] leading-tight line-clamp-2 ${isSelected ? 'text-neutral-300 dark:text-neutral-600' : 'text-neutral-500 dark:text-neutral-400'}`}>
+                    <p className={`mt-1 text-[10px] leading-tight line-clamp-2 ${isSelected ? 'text-neutral-300' : 'text-neutral-500'}`}>
                       {v.desc}
                     </p>
                   </button>
@@ -1008,18 +1008,18 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
           </div>
 
           {/* Live WorldClim Metadata Tag & Summary Card */}
-          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50/80 dark:bg-neutral-850 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="rounded-xl border border-neutral-200 bg-neutral-50/80 p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="min-w-0 space-y-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wide">
+                <span className="text-[10px] font-semibold text-neutral-500 uppercase tracking-wide">
                   Generated WorldClim v2.1 Identifier:
                 </span>
-                <code className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200 truncate max-w-full">
+                <code className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-white border border-neutral-300 text-neutral-800 truncate max-w-full">
                   {config.metadataIdentifier}
                 </code>
               </div>
-              <div className="flex items-center gap-1.5 text-[11px] text-neutral-600 dark:text-neutral-400 flex-wrap">
-                <span className="font-medium text-neutral-900 dark:text-neutral-200">{selectedScenario.code}</span>
+              <div className="flex items-center gap-1.5 text-[11px] text-neutral-600 flex-wrap">
+                <span className="font-medium text-neutral-900">{selectedScenario.code}</span>
                 <span>•</span>
                 <span>{selectedModel.name}</span>
                 <span>•</span>
@@ -1027,19 +1027,19 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                 <span>•</span>
                 <span>{config.resolution} (~{CMIP6_RESOLUTIONS.find(r => r.id === config.resolution)?.area})</span>
                 <span>•</span>
-                <span className="text-neutral-500 dark:text-neutral-400">{config.variableLabel}</span>
+                <span className="text-neutral-500">{config.variableLabel}</span>
               </div>
             </div>
 
             <button
               type="button"
               onClick={handleCopyTag}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-750 hover:text-neutral-900 dark:hover:text-white transition shrink-0 cursor-pointer self-start sm:self-auto"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-200 bg-white text-xs font-medium text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition shrink-0 cursor-pointer self-start sm:self-auto"
             >
               {copied ? (
                 <>
-                  <Check className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span className="text-emerald-700 dark:text-emerald-400">Copied!</span>
+                  <Check className="h-3.5 w-3.5 text-emerald-600" />
+                  <span className="text-emerald-700">Copied!</span>
                 </>
               ) : (
                 <>
@@ -1052,8 +1052,8 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
 
           {/* Climate Analysis Question Suggestions */}
           {onApplyQuestion && (
-            <div className="border-t border-neutral-100 dark:border-neutral-800 pt-3">
-              <span className="text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 flex items-center gap-1 mb-2">
+            <div className="border-t border-neutral-100 pt-3">
+              <span className="text-[11px] font-semibold text-neutral-600 flex items-center gap-1 mb-2">
                 <Info className="h-3 w-3 text-io-blue" />
                 Click to apply climate-focused analysis prompts:
               </span>
@@ -1064,7 +1064,7 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
                     type="button"
                     disabled={disabled}
                     onClick={() => onApplyQuestion(item.query)}
-                    className="text-left text-[11px] px-2.5 py-1 rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:border-io-blue dark:hover:border-blue-400 hover:text-io-blue dark:hover:text-blue-400 transition cursor-pointer"
+                    className="text-left text-[11px] px-2.5 py-1 rounded-full border border-neutral-200 bg-white text-neutral-700 hover:border-io-blue hover:text-io-blue transition cursor-pointer"
                   >
                     💡 {item.label}
                   </button>
@@ -1074,12 +1074,12 @@ export const ClimateSetupSection: React.FC<ClimateSetupSectionProps> = ({
           )}
         </div>
       ) : (
-        <div className="mt-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-850 border border-dashed border-neutral-200 dark:border-neutral-800 text-xs text-neutral-500 dark:text-neutral-400 flex items-center justify-between">
+        <div className="mt-3 p-3 rounded-xl bg-neutral-50 border border-dashed border-neutral-200 text-xs text-neutral-500 flex items-center justify-between">
           <span>{t.climateEnabledNotice}</span>
           <button
             type="button"
             onClick={() => updateField('enabled', true)}
-            className="text-xs text-io-blue dark:text-blue-400 font-medium hover:underline cursor-pointer ml-2 shrink-0"
+            className="text-xs text-io-blue font-medium hover:underline cursor-pointer ml-2 shrink-0"
           >
             {t.climateToggleLabel}
           </button>

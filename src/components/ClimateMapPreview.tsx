@@ -50,9 +50,9 @@ const SCENARIO_DETAILS: Record<CMIP6ScenarioId, ScenarioMapDetails> = {
     imageSrc: ssp126Img,
     anomalyRange: '+1.5°C to +1.8°C',
     arcticWarming: '+2.5°C to +3.5°C',
-    thermalClass: 'text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/50 border-emerald-200 dark:border-emerald-800',
+    thermalClass: 'text-emerald-700 bg-emerald-50 border-emerald-200',
     accentColor: '#059669',
-    badgeBg: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
+    badgeBg: 'bg-emerald-100 text-emerald-900 border-emerald-300',
     summary: 'Low greenhouse gas trajectory consistent with Paris Agreement goals. Global temperature stabilizes by mid-century with minimal extreme thermal displacement.',
     impactHotspots: [
       { name: 'Arctic Basin', impact: 'Subdued sea ice retreat; permafrost thaw minimized' },
@@ -64,9 +64,9 @@ const SCENARIO_DETAILS: Record<CMIP6ScenarioId, ScenarioMapDetails> = {
     imageSrc: ssp245Img,
     anomalyRange: '+2.4°C to +3.0°C (~+2.7°C mean)',
     arcticWarming: '+4.5°C to +6.0°C',
-    thermalClass: 'text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/50 border-blue-200 dark:border-blue-800',
+    thermalClass: 'text-blue-700 bg-blue-50 border-blue-200',
     accentColor: '#2563eb',
-    badgeBg: 'bg-blue-100 dark:bg-blue-950/60 text-blue-900 dark:text-blue-300 border-blue-300 dark:border-blue-800',
+    badgeBg: 'bg-blue-100 text-blue-900 border-blue-300',
     summary: 'Middle-of-the-road trajectory reflecting existing policies and pledges. Evident continental warming with pronounced continental mid-latitude dry spells.',
     impactHotspots: [
       { name: 'Arctic Basin', impact: 'Frequent ice-free September events by late century' },
@@ -78,9 +78,9 @@ const SCENARIO_DETAILS: Record<CMIP6ScenarioId, ScenarioMapDetails> = {
     imageSrc: ssp245Img, // Representative intermediate-high
     anomalyRange: '+3.2°C to +4.0°C (~+3.6°C mean)',
     arcticWarming: '+6.5°C to +8.0°C',
-    thermalClass: 'text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/50 border-amber-200 dark:border-amber-800',
+    thermalClass: 'text-amber-700 bg-amber-50 border-amber-200',
     accentColor: '#d97706',
-    badgeBg: 'bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border-amber-300 dark:border-amber-800',
+    badgeBg: 'bg-amber-100 text-amber-900 border-amber-300',
     summary: 'Regional rivalry pathway with high regional emissions and weak environmental cooperation. Substantial thermal anomaly across terrestrial landmasses.',
     impactHotspots: [
       { name: 'Amazon Basin', impact: 'Heightened risk of forest dieback and savanna transition' },
@@ -92,9 +92,9 @@ const SCENARIO_DETAILS: Record<CMIP6ScenarioId, ScenarioMapDetails> = {
     imageSrc: ssp585Img,
     anomalyRange: '+4.0°C to +5.2°C (~+4.4°C mean)',
     arcticWarming: '+8.0°C to +11.5°C',
-    thermalClass: 'text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/50 border-rose-200 dark:border-rose-800',
+    thermalClass: 'text-rose-700 bg-rose-50 border-rose-200',
     accentColor: '#e11d48',
-    badgeBg: 'bg-rose-100 dark:bg-rose-950/60 text-rose-900 dark:text-rose-300 border-rose-300 dark:border-rose-800',
+    badgeBg: 'bg-rose-100 text-rose-900 border-rose-300',
     summary: 'High-emission fossil-fueled development scenario. Severe planetary heating with intense polar amplification and dangerous wet-bulb temperature exceedance.',
     impactHotspots: [
       { name: 'Arctic Ocean', impact: 'Virtually perennial sea-ice loss and massive glacier destabilization' },
@@ -437,24 +437,24 @@ export const ClimateMapPreview: React.FC<ClimateMapPreviewProps> = ({
   return (
     <div 
       id="climate-map-preview-container" 
-      className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 overflow-hidden shadow-xs transition-all"
+      className="rounded-2xl border border-neutral-200 bg-white overflow-hidden shadow-xs transition-all"
     >
       {/* Top Bar / Metadata Header */}
-      <div className="p-3.5 sm:p-4 bg-neutral-50/80 dark:bg-neutral-850/80 border-b border-neutral-200/80 dark:border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+      <div className="p-3.5 sm:p-4 bg-neutral-50/80 border-b border-neutral-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="p-1 rounded-lg bg-blue-100 dark:bg-blue-950/70 text-io-blue dark:text-blue-400">
+          <span className="p-1 rounded-lg bg-blue-100 text-io-blue">
             <Globe className="h-4 w-4" />
           </span>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-xs font-semibold text-neutral-900 dark:text-neutral-100">
-                {language === 'fr' ? 'Aperçu représentatif de la carte climatique' : 'Representative Global Climate Map Preview'}
+              <h3 className="text-xs font-semibold text-neutral-900">
+                {language === 'fr' ? 'Illustration : aperçu non calculé à partir des données WorldClim' : 'Illustration: preview not computed from WorldClim data'}
               </h3>
               <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${currentDetails.badgeBg}`}>
                 {scenarioObj.code} • {scenarioObj.tempRise2100}
               </span>
             </div>
-            <p className="text-[11px] text-neutral-500 dark:text-neutral-400">
+            <p className="text-[11px] text-neutral-500">
               {language === 'fr' 
                 ? `Surface d'anomalie WorldClim v2.1 mise à l'échelle sous ${modelObj.name} (${config.period})` 
                 : `Downscaled WorldClim v2.1 anomaly projection surface under ${modelObj.name} (${config.period})`}
@@ -472,10 +472,10 @@ export const ClimateMapPreview: React.FC<ClimateMapPreviewProps> = ({
             onClick={handleExportPNG}
             className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition cursor-pointer flex items-center gap-1.5 shadow-xs select-none ${
               exportSuccess
-                ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300'
+                ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
                 : exportError
-                ? 'bg-rose-50 dark:bg-rose-950/50 border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300'
-                : 'bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border-neutral-300 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-750 hover:text-neutral-900 dark:hover:text-white'
+                ? 'bg-rose-50 border-rose-300 text-rose-800'
+                : 'bg-white text-neutral-800 border-neutral-300 hover:bg-neutral-50 hover:text-neutral-900'
             } ${disabled || isExporting ? 'opacity-60 cursor-not-allowed' : ''}`}
             title={language === 'fr' ? "Exporter l'aperçu de la carte en fichier PNG haute résolution (2400x1350)" : "Export current climate scenario visual as a high-resolution PNG image file (2400x1350)"}
           >
@@ -502,8 +502,8 @@ export const ClimateMapPreview: React.FC<ClimateMapPreviewProps> = ({
             onClick={() => setShowHotspots(!showHotspots)}
             className={`px-2 py-1 rounded-lg text-[11px] font-medium border transition cursor-pointer flex items-center gap-1 ${
               showHotspots 
-                ? 'bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 border-neutral-300 dark:border-neutral-700 shadow-xs' 
-                : 'bg-neutral-100 dark:bg-neutral-800/60 text-neutral-500 dark:text-neutral-400 border-transparent hover:bg-neutral-200/70 dark:hover:bg-neutral-750'
+                ? 'bg-white text-neutral-800 border-neutral-300 shadow-xs' 
+                : 'bg-neutral-100 text-neutral-500 border-transparent hover:bg-neutral-200/70'
             }`}
             title={language === 'fr' ? "Basculer l'affichage des points chauds" : "Toggle regional impact callouts"}
           >
@@ -514,7 +514,7 @@ export const ClimateMapPreview: React.FC<ClimateMapPreviewProps> = ({
           <button
             type="button"
             onClick={() => setIsEnlarged(!isEnlarged)}
-            className="px-2 py-1 rounded-lg text-[11px] font-medium bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-750 transition cursor-pointer flex items-center gap-1 shadow-xs"
+            className="px-2 py-1 rounded-lg text-[11px] font-medium bg-white text-neutral-700 border border-neutral-300 hover:bg-neutral-100 transition cursor-pointer flex items-center gap-1 shadow-xs"
             title={isEnlarged ? (language === 'fr' ? "Vue standard" : "Standard view") : (language === 'fr' ? "Agrandir l'aperçu" : "Enlarge map preview")}
           >
             {isEnlarged ? (
@@ -604,9 +604,9 @@ export const ClimateMapPreview: React.FC<ClimateMapPreviewProps> = ({
       </div>
 
       {/* Interactive Scenario Quick-Switch Strip */}
-      <div className="p-3 bg-neutral-50/90 dark:bg-neutral-850/90 border-t border-neutral-200/80 dark:border-neutral-800 flex flex-col md:flex-row md:items-center justify-between gap-2.5 text-xs">
+      <div className="p-3 bg-neutral-50/90 border-t border-neutral-200/80 flex flex-col md:flex-row md:items-center justify-between gap-2.5 text-xs">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 flex items-center gap-1 mr-1">
+          <span className="text-[11px] font-semibold text-neutral-600 flex items-center gap-1 mr-1">
             <Sparkles className="h-3 w-3 text-io-blue" />
             Switch map view:
           </span>
@@ -620,8 +620,8 @@ export const ClimateMapPreview: React.FC<ClimateMapPreviewProps> = ({
                 onClick={() => onSelectScenario && onSelectScenario(sc.id)}
                 className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition cursor-pointer flex items-center gap-1.5 ${
                   isActive
-                    ? 'bg-white dark:bg-neutral-800 border-neutral-900 dark:border-neutral-200 text-neutral-900 dark:text-white font-semibold shadow-xs ring-1 ring-neutral-900/10 dark:ring-white/10'
-                    : 'bg-white/60 dark:bg-neutral-800/60 border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-white dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white'
+                    ? 'bg-white border-neutral-900 text-neutral-900 font-semibold shadow-xs ring-1 ring-neutral-900/10'
+                    : 'bg-white/60 border-neutral-200 text-neutral-600 hover:bg-white hover:text-neutral-900'
                 } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {sc.id === 'ssp126' && <Leaf className="h-3 w-3 text-emerald-600" />}
@@ -634,7 +634,7 @@ export const ClimateMapPreview: React.FC<ClimateMapPreviewProps> = ({
           })}
         </div>
 
-        <div className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug">
+        <div className="text-[11px] text-neutral-500 leading-snug">
           <span>{currentDetails.summary}</span>
         </div>
       </div>

@@ -106,10 +106,10 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ duration: 0.2 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-neutral-900 shadow-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden my-8 text-neutral-900 dark:text-neutral-100"
+            className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl border border-neutral-200 overflow-hidden my-8 text-neutral-900"
           >
             {/* Header with Warm Theme */}
-            <div className="relative bg-gradient-to-br from-amber-400 via-amber-300 to-yellow-400 dark:from-amber-500 dark:via-amber-400 dark:to-yellow-500 p-6 text-neutral-900">
+            <div className="relative bg-gradient-to-br from-amber-400 via-amber-300 to-yellow-400 p-6 text-neutral-900">
               {/* Close button */}
               <button
                 type="button"
@@ -121,7 +121,7 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
               </button>
 
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-2xl bg-white dark:bg-neutral-900 shadow-md flex items-center justify-center text-amber-600 dark:text-amber-400">
+                <div className="h-12 w-12 rounded-2xl bg-white shadow-md flex items-center justify-center text-amber-600">
                   <Coffee className="h-6 w-6" />
                 </div>
                 <div>
@@ -147,28 +147,28 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
             {/* Content Body */}
             <div className="p-6 space-y-5">
               {hasDonated ? (
-                <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 p-5 text-center space-y-3 animate-fade-in">
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400">
+                <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-5 text-center space-y-3 animate-fade-in">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
                     <Sparkles className="h-6 w-6" />
                   </div>
-                  <h3 className="text-base font-bold text-neutral-900 dark:text-neutral-100">
+                  <h3 className="text-base font-bold text-neutral-900">
                     {t.coffeeThankYouTitle}
                   </h3>
-                  <p className="text-xs text-neutral-600 dark:text-neutral-300 max-w-sm mx-auto">
+                  <p className="text-xs text-neutral-600 max-w-sm mx-auto">
                     {t.coffeeThankYouDesc}
                   </p>
                   <div className="pt-2 flex justify-center gap-2">
                     <button
                       type="button"
                       onClick={() => setHasDonated(false)}
-                      className="text-xs font-semibold text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white px-3 py-1.5 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800"
+                      className="text-xs font-semibold text-neutral-700 hover:text-neutral-900 px-3 py-1.5 rounded-lg border border-neutral-300 bg-white"
                     >
                       {t.coffeeAnotherContribution}
                     </button>
                     <button
                       type="button"
                       onClick={onClose}
-                      className="text-xs font-semibold text-white px-4 py-1.5 rounded-lg bg-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-white"
+                      className="text-xs font-semibold text-white px-4 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800"
                     >
                       {t.coffeeDoneBtn}
                     </button>
@@ -178,7 +178,7 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
                 <>
                   {/* Select Tiers */}
                   <div>
-                    <label className="text-xs font-bold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 block mb-2">
+                    <label className="text-xs font-bold uppercase tracking-wider text-neutral-600 block mb-2">
                       {t.coffeeSelectAmount}
                     </label>
                     <div className="grid grid-cols-3 gap-2.5">
@@ -194,8 +194,8 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
                             }}
                             className={`relative p-3 rounded-xl border text-center transition flex flex-col items-center justify-between cursor-pointer ${
                               isSelected
-                                ? 'border-amber-500 bg-amber-50/50 dark:bg-amber-950/40 dark:border-amber-500 ring-2 ring-amber-400/40 shadow-xs'
-                                : 'border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-850 hover:border-neutral-300 dark:hover:border-neutral-700 hover:bg-neutral-50/50 dark:hover:bg-neutral-800'
+                                ? 'border-amber-500 bg-amber-50/50 ring-2 ring-amber-400/40 shadow-xs'
+                                : 'border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-50/50'
                             }`}
                           >
                             {tier.badge && (
@@ -203,14 +203,14 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
                                 {tier.badge}
                               </span>
                             )}
-                            <div className="text-lg mt-1 font-bold text-neutral-900 dark:text-neutral-100">
-                              <span className="text-amber-600 dark:text-amber-400 font-mono mr-0.5">$</span>{tier.amount}
+                            <div className="text-lg mt-1 font-bold text-neutral-900">
+                              <span className="text-amber-600 font-mono mr-0.5">$</span>{tier.amount}
                             </div>
-                            <div className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-1 mt-0.5">
+                            <div className="text-xs font-semibold text-neutral-700 flex items-center gap-1 mt-0.5">
                               <Coffee className="h-3 w-3 text-amber-500" />
                               <span>{tier.label}</span>
                             </div>
-                            <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-1 leading-tight line-clamp-2">
+                            <p className="text-[10px] text-neutral-500 mt-1 leading-tight line-clamp-2">
                               {tier.description}
                             </p>
                           </button>
@@ -226,8 +226,8 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
                           onClick={() => setIsCustom(!isCustom)}
                           className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition cursor-pointer ${
                             isCustom 
-                              ? 'bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 border-neutral-900 dark:border-neutral-100' 
-                              : 'bg-neutral-50 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600'
+                              ? 'bg-neutral-900 text-white border-neutral-900' 
+                              : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:border-neutral-300'
                           }`}
                         >
                           {t.coffeeCustomAmount}
@@ -244,7 +244,7 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
                               value={customAmount}
                               onChange={(e) => setCustomAmount(e.target.value)}
                               placeholder={t.coffeeEnterCustom}
-                              className="w-full rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800 pl-7 pr-3 py-1.5 text-xs text-neutral-900 dark:text-neutral-100 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none"
+                              className="w-full rounded-lg border border-neutral-300 bg-white pl-7 pr-3 py-1.5 text-xs text-neutral-900 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 outline-none"
                             />
                           </div>
                         )}
@@ -255,7 +255,7 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
                   {/* Optional message / supporter name */}
                   <div className="space-y-2 pt-1">
                     <div>
-                      <label className="text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 block mb-1">
+                      <label className="text-[11px] font-semibold text-neutral-600 block mb-1">
                         {t.coffeeYourNameOptional}
                       </label>
                       <input
@@ -263,11 +263,11 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
                         value={supporterName}
                         onChange={(e) => setSupporterName(e.target.value)}
                         placeholder={t.coffeeYourNamePlaceholder}
-                        className="w-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-1.5 text-xs text-neutral-800 dark:text-neutral-200 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-neutral-400 dark:focus:border-neutral-500 outline-none"
+                        className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs text-neutral-800 placeholder:text-neutral-400 focus:border-neutral-400 outline-none"
                       />
                     </div>
                     <div>
-                      <label className="text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 block mb-1">
+                      <label className="text-[11px] font-semibold text-neutral-600 block mb-1">
                         {t.coffeeNoteOptional}
                       </label>
                       <input
@@ -275,18 +275,18 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
                         value={supporterMessage}
                         onChange={(e) => setSupporterMessage(e.target.value)}
                         placeholder={t.coffeeNotePlaceholder}
-                        className="w-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 px-3 py-1.5 text-xs text-neutral-800 dark:text-neutral-200 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 focus:border-neutral-400 dark:focus:border-neutral-500 outline-none"
+                        className="w-full rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs text-neutral-800 placeholder:text-neutral-400 focus:border-neutral-400 outline-none"
                       />
                     </div>
                   </div>
 
                   {/* Where the funds go */}
-                  <div className="rounded-xl bg-neutral-50 dark:bg-neutral-800/70 border border-neutral-200/80 dark:border-neutral-750 p-3 text-xs space-y-2">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 flex items-center gap-1">
-                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <div className="rounded-xl bg-neutral-50 border border-neutral-200/80 p-3 text-xs space-y-2">
+                    <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 flex items-center gap-1">
+                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
                       {t.coffeeHowHelps}
                     </div>
-                    <div className="grid grid-cols-3 gap-2 text-[11px] text-neutral-600 dark:text-neutral-300">
+                    <div className="grid grid-cols-3 gap-2 text-[11px] text-neutral-600">
                       <div className="flex items-center gap-1.5">
                         <Cpu className="h-3 w-3 text-io-blue shrink-0" />
                         <span>{t.coffeeHelpCompute}</span>
@@ -315,19 +315,19 @@ export const BuyMeACoffeeModal: React.FC<BuyMeACoffeeModalProps> = ({
                       <ExternalLink className="h-3.5 w-3.5 ml-0.5 opacity-70" />
                     </button>
 
-                    <div className="flex items-center justify-between pt-1 text-xs text-neutral-500 dark:text-neutral-400 px-1">
+                    <div className="flex items-center justify-between pt-1 text-xs text-neutral-500 px-1">
                       <span className="flex items-center gap-1 text-[11px]">
                         {t.coffeeSecureDirect}
                       </span>
                       <button
                         type="button"
                         onClick={handleCopyLink}
-                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition hover:underline cursor-pointer"
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-700 hover:text-neutral-900 transition hover:underline cursor-pointer"
                       >
                         {copiedLink ? (
                           <>
-                            <Check className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
-                            <span className="text-emerald-700 dark:text-emerald-400">{t.coffeeLinkCopied}</span>
+                            <Check className="h-3 w-3 text-emerald-600" />
+                            <span className="text-emerald-700">{t.coffeeLinkCopied}</span>
                           </>
                         ) : (
                           <>
@@ -359,7 +359,7 @@ export const BuyMeCoffeeButton: React.FC<{
     return (
       <div 
         id="buy-me-coffee-callout-banner"
-        className={`rounded-2xl border border-amber-200/80 dark:border-amber-500/30 bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-950/25 dark:via-neutral-900 dark:to-orange-950/20 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs ${className}`}
+        className={`rounded-2xl border border-amber-200/80 bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs ${className}`}
       >
         <div className="flex items-center gap-3.5">
           <div className="h-10 w-10 rounded-xl bg-amber-400 text-neutral-900 flex items-center justify-center shadow-xs shrink-0">
@@ -367,14 +367,14 @@ export const BuyMeCoffeeButton: React.FC<{
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h4 className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
+              <h4 className="text-sm font-bold text-neutral-900">
                 {t.coffeeCalloutTitle}
               </h4>
-              <span className="text-[10px] font-bold bg-amber-200/80 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded-full">
                 {t.coffeeFundraisingBadge}
               </span>
             </div>
-            <p className="text-xs text-neutral-600 dark:text-neutral-300 mt-0.5">
+            <p className="text-xs text-neutral-600 mt-0.5">
               {t.coffeeCalloutDesc}
             </p>
           </div>
@@ -415,12 +415,11 @@ export const BuyMeCoffeeButton: React.FC<{
       type="button"
       id="header-buy-coffee-btn"
       onClick={onClick}
-      className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-400 hover:bg-amber-500 text-neutral-900 border border-amber-500/40 shadow-xs hover:shadow transition-all transform active:scale-95 cursor-pointer ${className}`}
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-200 transition cursor-pointer ${className}`}
       title={t.buyMeCoffee}
     >
-      <Coffee className="h-3.5 w-3.5 text-neutral-900" />
+      <Coffee className="h-3.5 w-3.5" aria-hidden="true" />
       <span>{t.buyMeCoffee}</span>
-      <span className="flex h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
     </button>
   );
 };

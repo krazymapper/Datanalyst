@@ -86,7 +86,9 @@ export const DEFAULT_RECENT_CONFIGS: RecentClimateConfig[] = [
 export function getStoredRecentConfigs(): RecentClimateConfig[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_RECENT_CONFIGS;
+    // Premier passage : aucun historique (l'ancienne version affichait 4 faux
+    // historiques « il y a 1 h, 4 h, 21 h »).
+    if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (Array.isArray(parsed) && parsed.length > 0) {
       return parsed;
@@ -94,7 +96,7 @@ export function getStoredRecentConfigs(): RecentClimateConfig[] {
   } catch (err) {
     console.warn('Failed to load recent climate configs from localStorage:', err);
   }
-  return DEFAULT_RECENT_CONFIGS;
+  return [];
 }
 
 export function saveRecentClimateConfig(

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 // so a missing file here is fine.
 dotenv.config({ path: [".env.local", ".env"] });
 
+import { BurstLimiter, checkAndCount, resolveDailyLimit, visitorKey, type QuotaStore } from "./server/lib/rateLimit";
 import express from "express";
 import path from "path";
 import {
@@ -182,8 +183,30 @@ async function startServer() {
   // Run initial cleanup on startup
   cleanUpOldGenerations();
 
-  app.use(express.json({ limit: "50mb" }));
-  app.use("/output", express.static(path.join(process.cwd(), "output")));
+  // Derrière un proxy (Cloud Run, AI Studio) : l'IP réelle vient de X-Forwarded-For.
+  app.set("trust proxy", 1);
+  // Les CSV inline font au plus 1 Mo chacun : 10 Mo suffisent largement.
+  app.use(express.json({ limit: "10mb" }));
+  // Seules les images de graphiques sont servies (avant : tout le dossier output,
+  // fichier de quota compris).
+  app.get(/^\/output\/([A-Za-z0-9_-]+)\/charts\/([A-Za-z0-9_.-]+\.(?:png|jpe?g))$/i, (req, res) => {
+    const params = req.params as unknown as Record<string, string>;
+    res.sendFile(path.join(params[0], "charts", params[1]), { root: path.join(process.cwd(), "output") }, (err) => {
+      if (err && !res.headersSent) res.status(404).end();
+    });
+  });
+
+  // Limites d'usage de l'API Gemini (voir server/lib/rateLimit.ts)
+  const VISITOR_SALT = process.env.QUOTA_SALT || "datanalyst";
+  const burst = new BurstLimiter(Number(process.env.BURST_LIMIT_PER_MINUTE) || 5, 60_000);
+  const burstGuard: express.RequestHandler = (req, res, next) => {
+    const key = visitorKey(req.ip, VISITOR_SALT);
+    if (!burst.take(key)) {
+      res.setHeader("Retry-After", String(burst.retryAfterSeconds(key)));
+      return res.status(429).json({ error: "Trop de requêtes. Réessayez dans une minute." });
+    }
+    next();
+  };
 
   // API routes FIRST
   app.post("/api/cancel-show", (req, res) => {
@@ -198,49 +221,10 @@ async function startServer() {
     }
   });
 
-  app.get("/api/download-proxy", async (req, res) => {
-    const targetUrl = req.query.url as string;
-    if (!targetUrl) {
-      res.status(400).send("Missing url parameter");
-      return;
-    }
-    try {
-      const parsedUrl = new URL(targetUrl);
-      if (!parsedUrl.hostname.endsWith("storage.googleapis.com") && !parsedUrl.hostname.endsWith("googleusercontent.com")) {
-        res.status(403).send("Forbidden: Domain not allowed");
-        return;
-      }
-      const response = await fetch(targetUrl);
-      if (!response.ok) {
-        res
-          .status(response.status)
-          .send(`Failed to fetch: ${response.statusText}`);
-        return;
-      }
-      res.setHeader(
-        "Content-Type",
-        response.headers.get("Content-Type") || "application/octet-stream",
-      );
-      res.setHeader("Access-Control-Allow-Origin", "*");
+  // /api/download-proxy supprimé : inutilisé par l'interface, il relayait
+  // n'importe quel fichier GCS public (bande passante, contenu tiers).
 
-      const arrayBuffer = await response.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      res.send(buffer);
-    } catch (err) {
-      console.error("Download proxy failed:", err);
-      res
-        .status(500)
-        .send(
-          `Internal server error: ${err instanceof Error ? err.message : String(err)}`,
-        );
-    }
-  });
-
-  const QUOTA_CACHE_FILE = path.join(
-    process.cwd(),
-    "output",
-    "quota_cache.json",
-  );
+  const QUOTA_CACHE_FILE = path.join(process.cwd(), ".data", "quota_cache.json");
   const DEFAULT_QUOTA_LIMIT = 999999;
 
   function getQuotaLimit(): number {
@@ -265,8 +249,25 @@ async function startServer() {
   }
 
   async function getUserHash(req: express.Request): Promise<string | null> {
-    // Fallback during local development or unauthenticated preview testing
-    return "dev-user-hash";
+    // Avant : constante "dev-user-hash" partagée par tous les visiteurs.
+    return visitorKey(req.ip, VISITOR_SALT);
+  }
+
+  function readQuotaStore(): QuotaStore {
+    try {
+      return JSON.parse(fs.readFileSync(QUOTA_CACHE_FILE, "utf-8"));
+    } catch {
+      return {};
+    }
+  }
+
+  function writeQuotaStore(store: QuotaStore) {
+    try {
+      fs.mkdirSync(path.dirname(QUOTA_CACHE_FILE), { recursive: true });
+      fs.writeFileSync(QUOTA_CACHE_FILE, JSON.stringify(store), "utf-8");
+    } catch (err) {
+      console.error("Écriture du quota impossible :", err);
+    }
   }
 
   function getQuotaCount(userHash: string | null): number {
@@ -317,11 +318,12 @@ async function startServer() {
   }
 
   app.get("/api/quota", async (req, res) => {
-    if (process.env.NODE_ENV !== "production") {
-      return res.json({ used: 0, limit: 999999 });
+    const dailyLimit = resolveDailyLimit(process.env);
+    if (dailyLimit === null) {
+      return res.json({ used: 0, limit: null });
     }
     const userHash = await getUserHash(req);
-    const limit = getQuotaLimit();
+    const limit = dailyLimit;
     if (!userHash) {
       return res.json({ used: 0, limit });
     }
@@ -338,6 +340,7 @@ async function startServer() {
 
   app.post(
     "/api/upload",
+    burstGuard,
     (req, res, next) => {
       uploadSingle(req, res, (err) => {
         if (err) {
@@ -428,7 +431,7 @@ async function startServer() {
     return res.json({ success: true });
   });
 
-  app.post("/api/analyze", async (req, res) => {
+  app.post("/api/analyze", burstGuard, async (req, res) => {
     // Run background cleanup whenever a new analysis is requested to optimize disk space
     cleanUpOldGenerations();
 
@@ -466,7 +469,18 @@ async function startServer() {
       return res.status(400).json({ error: "Provide at least one CSV file." });
     }
 
-    console.log(`[analyze] Skipping daily quota tracking as requested.`);
+    // Quota quotidien par visiteur (avant : jamais appliqué).
+    const dailyLimit = resolveDailyLimit(process.env);
+    if (dailyLimit !== null) {
+      const visitor = visitorKey(req.ip, VISITOR_SALT);
+      const verdict = checkAndCount(readQuotaStore(), visitor, dailyLimit);
+      if (!verdict.allowed) {
+        return res.status(429).json({
+          error: `Limite quotidienne atteinte (${dailyLimit} analyses par jour). Réessayez demain.`,
+        });
+      }
+      writeQuotaStore(verdict.store);
+    }
 
     const effectiveDatasetName = datasetName;
 
