@@ -178,7 +178,8 @@ function cleanUpOldGenerations() {
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  // Cloud Run, Render et Railway imposent le port via la variable PORT.
+  const PORT = Number(process.env.PORT) || 3000;
 
   // Run initial cleanup on startup
   cleanUpOldGenerations();
