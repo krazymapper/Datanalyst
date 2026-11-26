@@ -13,6 +13,14 @@ npm run lint                 # TypeScript check
 npm run build && npm start   # production mode
 ```
 
+## Deployment
+
+GitHub Pages is not suitable: the app needs a Node.js server that keeps the Gemini key secret. The `Dockerfile` works on any container host (Cloud Run, Render, Railway…).
+
+Variables to set on the host: `GEMINI_API_KEY` (required, as a secret), `QUOTA_SALT`, and optionally `DAILY_QUOTA_LIMIT`. The port is provided by the platform (`PORT`).
+
+> Quota counters (`.data/`) and charts (`output/`) are written to the container's disk, which Cloud Run, Render and Railway wipe on every restart. The quota therefore resets on each restart. A reliable quota needs persistent storage (Firestore, Redis…).
+
 ## Gemini budget protection
 
 Each analysis consumes the Gemini API key. Before this version, nothing was limited: the quota was keyed on a constant (`"dev-user-hash"`) and never applied to `/api/analyze`. Now:
